@@ -1,7 +1,5 @@
 # FMVFix — StartMovie / AI Sidecar Source Audit
 
-Source audited: supplied `FMVFix.zip` split archive, reconstructed from parts `.001` + `.002` + `.003`.
-
 ## Relevant implementation chain
 
 The current source identifies the build as:
