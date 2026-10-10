@@ -1,37 +1,36 @@
-# ReplayMovies validation
+# Validation
 
-## Final status
+[← ReplayMovies overview](../README.md) · [Engineering history](ENGINEERING_HISTORY.md) · [Architecture](ARCHITECTURE.md)
 
-The final chronological engineering record classifies ReplayMovies as **feature complete / maintenance only**. That status follows debugger-level cause analysis, source-level corrections, and runtime checks; it does not erase historical failures documented earlier in the investigation.
+**Recorded engineering state:** **FEATURE COMPLETE / EOL**, limited to regression and compatibility maintenance. The final chronological notebook closes the principal frontend, catalog and progression issues.
 
-## Validated areas
+## Completion matrix
 
-| Area | Recorded result |
-| --- | --- |
-| Main Menu integration | Seventh selectable native row, highlight/presentation, and submenu routing closed. |
-| Repeated menu construction | **15/15** fresh `MU_Main` reconstruction stress passes for the semantic descriptor-ownership fix. |
-| Geometry/ownership issue | Intermittent missing ReplayMovies option corrected; universal physical descriptor-offset assumption rejected. |
-| Alternate lifecycle path | Race → Quit Game menu reconstruction bypass diagnosed and guarded by a secondary observer; later record marks it closed. |
-| Movie return | Returning from `01_DAY` preserves/rebuilds ReplayMovies. |
-| Fresh User profile | True empty catalog confirmed; native Trailers/NASCAR contamination resolved. |
-| Unlock projection | `01_DAY` and `02_FAN_S` appear after their respective career encounters. |
-| Persistence | Profile seen state records on natural movie completion and skip/early termination. |
-| Developer catalog | All **17 career entries** accessible without falsely unlocking the User profile. |
-| One-item catalog | One-row selector behavior verified independently of full-catalog behavior. |
-| Replay-origin playback | Replaying a movie does not generate a new career unlock. |
+| Test area | Last recorded conclusion | Evidence boundary |
+| :--- | :--- | :--- |
+| Native menu extension | Seventh option, native highlight and selector, submenu entry and return closed. | English PC v1.4 x86 frontend. |
+| Generation-safe ownership | Native candidate allocation and semantic descriptor pairing restored. | Specific formerly failing reconstruction issue. |
+| Repeated menu recreation | **15 / 15** fresh `MU_Main` generations passed. | Focused ownership stress test; not every possible game transition. |
+| Alternate race exit | Race → Quit Game reconstruction route covered by fallback observer. | Recorded diagnostic and source promotion. |
+| `01_DAY` FMV return | ReplayMovies reconstructs and remains present. | Specific first-career-movie return test. |
+| Catalog | 17 Developer entries; compact User projection with canonical activation. | Recorded catalog checks. |
+| New profile | Truly empty User list, safe navigation and Back. | Zero-item test including Trailers/NASCAR isolation. |
+| Single movie | One-row selector and return function safely. | One-item regression. |
+| Progression | `01_DAY` and `02_FAN_S` unlock only after their career encounters. | Per-profile `SeenMask` tests. |
+| Termination | Natural end and skip/early exit commit eligible career unlocks. | Recorded lifetime/persistence checks. |
+| Replay-origin playback | Does **not** manufacture a new career unlock. | Origin gate tests. |
 
-## Specific ownership regression: 15/15
+## The key 15/15 finding
 
-The failed earlier rule assumed that selected and unselected descriptors were always adjacent at a particular offset. Debugging demonstrated different valid allocation layouts. Resolving descriptors by their owning nodes corrected the missing-entry behavior on the failing invocation and then passed **15 fresh `MU_Main` generations** over the recorded reconstruction paths.
+The intermittent missing seventh option was not solved by imposing a permanent heap-layout offset. Native selected/unselected descriptors can be allocated differently across valid menu generations. Reacquiring the live descriptor via its **semantic owning nodes** corrected the failing instance and passed **15 fresh reconstruction checks** spanning the paths under investigation.
 
-This figure measures **those stress cases**, not 15 distinct movie files or a universal compatibility benchmark.
+> [!IMPORTANT]
+> Older notebook entries marking menu geometry, post-`01_DAY` return, NASCAR contamination or User projection as unresolved are **superseded by later closure records**. They remain relevant to the historical diagnosis, not to current feature status.
 
-## Historical states vs current conclusions
+## Remaining qualification
 
-The notebooks retain failed attempts involving candidate memory ownership, geometry matching, zero-entry catalogs, alternate menu construction, and movie-return routes. They are valuable causal evidence, but their older OPEN/FAILED labels are superseded by the late closure entries described here.
+This does not certify every localization, distribution, game binary, third-party injected frontend, or mod combination. The archived `ReplayMovies.asi` build and build log establish project artifact provenance, not an independent clean-room rebuild. The public editorial pass performed **no new runtime testing**.
 
-## Qualification
+## Maintenance acceptance standard
 
-The tested baseline is the English PC v1.4 32-bit executable. This public summary does not claim exhaustive coverage of every localization, game build, third-party frontend replacement, or external injector. No new tests were run solely to prepare this Markdown page.
-
-Related: [Architecture](ARCHITECTURE.md) · [Profile progression](PROFILE_PROGRESSION.md)
+A proposed fix should name a reproducible regression, preserve native ownership and generation isolation, and rerun the exact affected menu/progression tests. Cosmetic architectural refactoring is **not** part of the EOL maintenance policy.

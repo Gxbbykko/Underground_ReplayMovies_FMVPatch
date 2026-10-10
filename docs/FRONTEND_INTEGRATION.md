@@ -1,17 +1,38 @@
-# FRONTEND INTEGRATION
+# Frontend integration
 
-> **Editorial status:** Documentation outline. Technical details will be added only after checking the project notebooks and validated source/evidence.
+[← ReplayMovies overview](../README.md) · [Architecture](ARCHITECTURE.md) · [Lifecycle](LIFECYCLE_AND_HOOKS.md)
 
-## Scope
+## A native Main Menu entry
 
-Main Menu candidate extension, native selection, captions, and dispatch.
+The sixth-to-seventh candidate expansion is the foundation of ReplayMovies. The stock entries remain intact, and **REPLAY MOVIES** occupies a real native selectable position in `MU_Main`, with the ordinary highlight, directional navigation and selection machinery. It is **not** a floating text element that merely imitates a menu row.
 
-## Evidence to incorporate
+| Identity | Meaning |
+| :--- | :--- |
+| `ReplayMovies` | Logical name used to recognize and dispatch the new option. |
+| `REPLAY MOVIES` | Frontend-facing label styled like existing uppercase items. |
+| Candidate 7 | Native selection slot after the six original menu entries. |
+| Fresh menu generation | The only lifetime within which new frontend pointers remain valid. |
 
-- Confirmed engineering contracts and relevant validation results.
-- Important negative tests and superseded interpretations, clearly labeled.
-- Known limits, version-specific conditions, and references to the source notebooks.
+The plugin constructs the native-style frontend objects and only publishes the candidate once their ownership and display data are valid. Incomplete construction keeps a safe native fallback instead of exposing an invalid candidate.
 
-## Publication boundary
+## Movie browser
 
-No private source listings, compiled plugins, game assets, or upscaled video files are published here.
+The ReplayMovies entry opens a movie-selection interface using Underground's own frontend patterns and authored menu infrastructure. A historical prototype used the native Trailers/Options shell as a controlled way to reproduce selector and Back behavior. The final system also handles expanded catalog presentation and the **17 career films**, not merely the early first-movie test case.
+
+User and Developer catalogs share canonical movie identities but differ in visibility. In User mode, unlocked films are compacted into visible rows while retaining the mapping to their original canonical IDs. Thus the selected *display row* must not be treated as the selected *movie identity*.
+
+## Navigation and edge cases
+
+- **Selection:** activating a visible catalog row resolves the correct canonical film and enters the native movie path.
+- **Back:** returns to a fresh, correctly highlighted Main Menu without leaving detached or orphaned presentation state.
+- **Zero entries:** a fresh profile displays no replayable career movies; Up/Down are inert and Back remains safe.
+- **One entry:** navigation works without assuming a second item exists.
+- **Trailers isolation:** the game's pre-authored Trailers/NASCAR presentation does not leak into an empty ReplayMovies catalog.
+
+## Why geometry fixes mattered
+
+Several earlier display defects were tied to incomplete frontend data, descriptor lifetime, or prematurely restored Main Menu state. The final descriptor fix uses semantic native ownership rather than an assumed `+0x118` memory distance. The post-FMV generation must reconstruct its own frontend state instead of retaining stale menu structures.
+
+## Completion criteria
+
+The notebook records native selection/return behavior, the repaired orphan highlight and Trailers isolation, the `01_DAY` return path, alternate Race → Quit Game construction, and **15/15** fresh menu-generation passes for the ownership defect. These are the verified targets of the finished implementation, not proposed UI work.

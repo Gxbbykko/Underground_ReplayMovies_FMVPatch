@@ -1,35 +1,48 @@
-# ReplayMovies architecture
+# Architecture
 
-## Native frontend, not an overlay
+[← ReplayMovies overview](../README.md) · [Frontend integration](FRONTEND_INTEGRATION.md) · [Validation](VALIDATION.md)
 
-The original `MU_Main` runtime presents six native candidates. ReplayMovies extends the native candidate system to seven entries and makes its own entry participate in the existing frontend layout, selector, and dispatch. The extra option's logical name is `ReplayMovies`; its visible caption is **REPLAY MOVIES**.
+## Design objective
 
-The finished implementation follows native **object ownership**. The game owns the seven-entry candidate allocation. ReplayMovies constructs its frontend objects within the current menu generation and publishes the seventh entry only after the required native nodes and presentation data are ready. A fail-closed fallback preserves a safe native candidate if a generation is not fully assembled.
+ReplayMovies must feel like part of Underground's own frontend. It therefore uses the **native `MU_Main` candidate system**, rather than a painted overlay, external launcher or alternate FMV engine. The original Main Menu has six candidates; ReplayMovies adds a seventh while preserving their existing identities, ordering and behavior.
 
-## Generation-local lifetime
+```mermaid
+flowchart TD
+    A[Fresh MU_Main runtime] --> B[Game-owned candidate vector: 6 to 7]
+    B --> C[Attach native ReplayMovies frontend objects]
+    C --> D{All presentation and dispatch data valid?}
+    D -->|Yes| E[Publish ReplayMovies as candidate 7]
+    D -->|No| F[Keep native fail-safe entry]
+    E --> G[Native selector + movie submenu]
+    G --> H[Native StartMovie lifecycle]
+```
 
-A Main Menu return or a frontend transition can create a fresh `MU_Main` generation. Allocator addresses may be reused across generations; a matching address therefore does not prove a matching object lifetime.
+## Ownership and construction
 
-Consequently, the implementation reacquires the live runtime, native candidates, related frontend nodes, and presentation descriptors for each qualifying generation. It does not retain stale frontend pointers across menu reconstruction. The final record covers ordinary returns and an alternate Race → Quit Game path that bypassed the primary completed-generation observer until a guarded fallback was added.
+The game must own the candidate allocation it later releases. An early attempt to publish plugin-static candidate memory into a game-owned runtime field violated that contract and led to a native destructor crash. The settled design uses **native-owned expanded storage**, constructs the new frontend entry inside the *current* menu generation, and publishes it only when construction is complete. The fallback position is kept safe until the feature is ready.
 
-## Presentation descriptor ownership
+The option has distinct identities: an internal `ReplayMovies` name used by navigation/dispatch, and a visible uppercase **REPLAY MOVIES** caption consistent with the stock frontend. UI caption identity must never be mistaken for the internal dispatch identity.
 
-An early design inferred that selected and unselected presentation descriptors always lived at a fixed physical separation. This was **superseded**. Some native allocations exhibit that separation, but other valid layouts do not.
+## Generation isolation
 
-The corrected implementation follows the owning subordinate nodes/property storage and pairs descriptors **semantically**. That change closed the intermittent missing-option issue and passed 15 fresh-generation stress runs without reopening the native menu construction model.
+A post-movie return, profile transition or race exit can reconstruct `MU_Main`. The allocator may reuse an old address for a new instance, so pointer equality **does not** guarantee object lifetime equality. Runtime pointers, native candidates, menu nodes and presentation properties are therefore reacquired at each qualified completed-generation event; no cross-generation cached frontend pointers are trusted.
 
-## Navigation and movie activation
+## Semantic presentation ownership
 
-The added item behaves as a native row and routes to a dedicated career-film submenu. Navigation, selection, an empty or single-item catalogue, Back-to-Main-Menu return, and native FMV teardown were included in completion checks. The native movie subsystem continues to own actual playback; the ReplayMovies frontend is a controlled invocation and catalog surface, not a replacement video decoder.
+A historical assumption treated selected and unselected geometry descriptors as universally separated by a fixed physical distance (`0x118`). That distance happened to occur in some allocations but was **not** a reliable native invariant. The final implementation follows the **owning subordinate nodes and property-storage relationships** to locate the descriptors semantically. This repaired intermittent missing-entry behavior and passed **15/15 fresh-generation regression tests**. The old physical-offset rule is explicitly superseded.
 
-## Catalog design
+## Separation of concerns
 
-There is one canonical career catalog of **17 movies**. A Developer view exposes valid canonical entries. A User view projects only the active profile's encountered entries into a compact list, maintaining canonical identity through selection and return.
+| Subsystem | Responsibility |
+| :--- | :--- |
+| Main Menu construction | Native candidate ownership, seventh-row publication and generation safety. |
+| Frontend integration | Highlight/selection, submenu entry, Back and presentation layout. |
+| Catalog | Canonical 17-movie identities and User/Developer projection. |
+| Progression | Per-profile `SeenMask`, career encounter commits and replay exclusion. |
+| Movie lifecycle | Invoke existing playback and let Underground perform native teardown. |
 
-Normal career playback may record progression. Deliberate replay through ReplayMovies does not manufacture a new progression event. This separation is necessary to avoid changing the player's game history simply by reviewing an earlier cinematic.
+The movie subsystem—not ReplayMovies—owns decoding, timing, soundtrack and cleanup. [FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) is the separate compatibility layer for Xbox-origin `.mad` assets.
 
-## Evidence boundary
+## Evidence and maintenance
 
-The published description is reconstructed from the final ReplayMovies completion and reconstruction/ownership checkpoints. Source listings, function-hook implementations, private debugger journals, and unpublished configuration examples are not included here.
-
-Related: [Profile progression](PROFILE_PROGRESSION.md) · [Validation](VALIDATION.md)
+The final notebook marks this architecture **feature complete / EOL maintenance**. Later corrective work should address reproducible regressions without replacing settled native ownership or generation-lifetime contracts. This page summarizes the architecture; it does not reproduce withheld implementation source.

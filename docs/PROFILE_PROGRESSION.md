@@ -1,42 +1,53 @@
-# ReplayMovies profile progression
+# Profile progression
 
-## Two access modes
+[← ReplayMovies overview](../README.md) · [Movie catalog](MOVIE_CATALOG.md) · [Validation](VALIDATION.md)
 
-**User mode** reflects the cinematics encountered by the **active profile**, not the full career catalog. A new profile with no eligible movie encounters should therefore display an **empty** ReplayMovies list.
+## User and Developer access
 
-**Developer mode** exposes all valid entries in the 17-movie canonical catalog for testing. Developer access does not write artificial unlocks to the profile's real progression record.
+| Mode | Visible movies | Progress writes |
+| :--- | :--- | :--- |
+| **User** | Only career films already encountered by the **active profile**. | Qualifying **career** FMV termination may record an encounter. |
+| **Developer** | Full valid 17-entry catalog for engineering inspection. | Selecting a replay does **not** generate career unlocks. |
 
-Mode selection is part of the ReplayMovies configuration rather than an extra in-game User/Developer menu option. The actual configuration INI is intentionally withheld from this public repository pending review.
+Mode selection is configured privately rather than added as another in-game menu layer. The published documentation does not include the actual INI, player profiles or source-level storage hooks.
 
-## Encounter-to-catalog pipeline
+## The persistent seen state
 
-The final engineering record documents this high-level flow:
+The final implementation associates a canonical film's bit with the active profile's `SeenMask`, persisted in a local `ReplayMoviesProgress.ini`. This file is **per-player runtime state**, not a public configuration template. The canonical mask is projected into a compact User catalog whenever the relevant frontend generation is built.
 
-1. A qualifying career/native FMV is encountered by the active profile.
-2. Its canonical catalog identity is recorded in the profile's persistent seen-state mask (`SeenMask`).
-3. The User catalog is rebuilt as a compact projection of **seen** canonical movie entries.
-4. Selecting one of those visible entries launches the corresponding native FMV.
-5. Returning from playback preserves the correct canonical identity and prior unlock history.
+```mermaid
+flowchart TD
+    A[Qualifying career/native FMV] --> B[Native finish or skip/early exit]
+    B --> C[Commit canonical SeenMask bit]
+    C --> D[Persist active profile state]
+    D --> E[Compact User catalog from encountered films]
+    E --> F[Visible ReplayMovies rows]
+    F --> G[Native replay playback]
+    G --> H[No new career unlock]
+```
 
-The persisted record is called `ReplayMoviesProgress.ini` in the engineering log. This runtime progress file is **not** a distributable configuration example.
+Keeping canonical IDs separate from physical frontend rows prevents the wrong film being launched when the user has seen only scattered career entries. Each visible row resolves back to the correct canonical film, and returning from playback rebuilds the projection without inventing extra progress.
 
-## When progress is committed
+## Commit semantics
 
-The late validation record confirms persistence at FMV termination after **both natural completion and skipping/early termination**. The same record confirms that ReplayMovies-originated movie launches are excluded from these unlock commits. Viewing a movie again does not unlock an otherwise unseen career movie.
+- A normal eligible career movie can set its seen bit on **natural completion**.
+- An eligible **skip or early termination** can also commit the encountered movie.
+- A movie played **from ReplayMovies** is intentionally excluded from progression commits.
+- Progress is **profile-specific**: viewing a movie under one profile must not unlock it for another.
 
-The final regression checks cite `01_DAY` and `02_FAN_S`: each entered the visible User catalog only after its corresponding career movie had been played.
+The final notebook explicitly verified `01_DAY` and `02_FAN_S` entering the User catalog only after their respective career encounters, and verified state persistence on natural and skipped endings.
 
-## Empty, single-entry, and native Trailers cases
+## Empty and one-row catalogs
 
-- **Zero entries:** a fresh profile retains a genuine empty catalog, with no accidental native Trailers row or NASCAR movie imported into ReplayMovies.
-- **One entry:** safe navigation and selection were established without requiring a placeholder second entry.
-- **Multiple entries:** the compact visible order remains linked to canonical movie identities.
-- **Back navigation:** the frontend returns to Main Menu without manufacturing movie state or progression.
+| State | Expected result |
+| :--- | :--- |
+| New profile (`SeenMask = 0`) | Empty catalog; no placeholder movie. |
+| One encountered movie | A single valid selectable row; safe Up/Down/Back. |
+| Several nonconsecutive movies | Dense visible rows in canonical order, with stable movie identity. |
+| Full seen mask | User catalog displays all valid canonical entries. |
 
-Earlier notebook passages describe bugs in these states. The late confirmed validation closes them; they are historical failures, not current defects.
+The native Trailers/NASCAR item is **not** part of this catalog. An earlier contamination bug was later traced and closed; it must not be described as an ongoing defect.
 
-## Scope
+## Evidence limits
 
-This document describes observed project behavior. It does not publish personal profile files, the project's private implementation, exact hook code, or the unreleased configuration INI.
-
-Related: [Architecture](ARCHITECTURE.md) · [Validation](VALIDATION.md)
+The behavior above is recorded as complete for the English PC v1.4 x86 test baseline. No new profile or gameplay test was run for this editorial revision. See the [validation matrix](VALIDATION.md) for recorded cases.
