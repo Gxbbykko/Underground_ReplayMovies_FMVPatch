@@ -4,7 +4,7 @@
 
 ## Source and toolchain boundary
 
-The private FMVFix project targets a **Win32/x86 ASI** for Need for Speed: Underground (2003), English PC v1.4. Source files, Visual Studio project definitions, real runtime INIs, game assets and generated binaries are **not available in this GitHub branch**, so this is not an actionable public build tutorial.
+The published FMVFix source and Visual Studio project target a **Win32/x86 ASI** for Need for Speed: Underground (2003), English PC v1.4. Runtime INIs, copyrighted game/movie assets and generated binaries are not included. Readers can inspect and build this published source snapshot with a compatible Microsoft C++ toolchain.
 
 ## Recorded build provenance
 
@@ -17,10 +17,10 @@ The private FMVFix project targets a **Win32/x86 ASI** for Need for Speed: Under
 
 The later archived build does not retroactively turn a source-only checkpoint into a live runtime test; similarly the earlier source-only caveat does not negate the separate successful build artifact.
 
-## Eventual clean-build checklist
+## Clean-build checklist
 
 1. Confirm executable identity and the **32-bit** target; do not assume any `speed.exe` is compatible.
-2. Reproduce the Win32 Release build from an explicitly approved, versioned source snapshot once publication is authorized.
+2. Reproduce the Win32 Release build from an explicitly approved, versioned source snapshot from the published FMVFix branch.
 3. Record Visual Studio toolset, library/runtime dependencies, relevant warnings and artifact checksums.
 4. Verify Xbox mode **without** MP4 substitution, then each selected 1080p/4K picture tier and native fallback.
 5. Exercise natural completion, skip, movie restarts, frontend return and integration with ReplayMovies.
@@ -29,4 +29,4 @@ The later archived build does not retroactively turn a source-only checkpoint in
 
 ## Distribution
 
-The installer/download destination is intended to be **Nexus Mods**, once an actual listing is published. No speculative release URL, compiled artifact or source snapshot is linked here.
+The installer/download destination is intended to be **Nexus Mods**, once an actual listing is published. Source code is published on this branch. Do not assume any Nexus Mods release URL until the listing is public.

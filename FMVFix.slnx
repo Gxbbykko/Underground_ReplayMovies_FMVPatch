@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="FMVFix.vcxproj" Id="9eceb934-1b9a-4a5f-b148-9921220b68ff" />
+</Solution>

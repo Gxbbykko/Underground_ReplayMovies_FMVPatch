@@ -58,6 +58,6 @@ A later production-oriented source snapshot disabled routine diagnostic reports 
 
 ## Availability
 
-Documented target: **English PC v1.4 32-bit (`x86`)**. No C++ source, Visual Studio projects, actual INI, `.asi`, original movies or upscaled MP4s are distributed in this branch. User-ready plugin releases are reserved for **Nexus Mods**.
+Documented target: **English PC v1.4 32-bit (`x86`)**. C++ source and Visual Studio project files are published on this branch. Runtime INIs, compiled `.asi` modules, original movies and upscaled MP4 assets are not hosted here. User-ready plugin releases are reserved for **Nexus Mods**.
 
 [← Project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVPatch documentation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)

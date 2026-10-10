@@ -1,22 +1,7 @@
-# Private source trees (publication is intentionally deferred)
+# Private working folders remain excluded; approved project sources are public
 source/
 src/
 private/
-*.c
-*.cc
-*.cpp
-*.h
-*.hpp
-*.inl
-*.asm
-*.s
-*.vcxproj
-*.vcxproj.filters
-*.sln
-*.slnx
-*.props
-*.targets
-*.rc
 
 # Visual Studio, build and debugger artifacts
 .vs/
