@@ -2,7 +2,7 @@
 
 **Status:** Completed Xbox `.mad` compatibility engineering milestone; documentation chapter.
 
-FMVFix addresses Xbox movie compatibility within Need for Speed: Underground (2003)'s existing PC FMV lifecycle. The engineering record covers container/parser admission, decode-path divergence, audio handling, presentation, native teardown, and final integration. The current integrated FMVFix implementation also contains the separate FMVPatch video-substitution functionality described in Chapter III.
+FMVFix addresses Xbox movie compatibility within Need for Speed: Underground (2003)'s existing PC FMV lifecycle. The engineering record covers container/parser admission, decode-path divergence, audio handling, presentation, native teardown, and final integration. The current integrated FMVFix implementation also contains the separate FMVPatch video-substitution functionality documented in the FMVPatch branch.
 
 ## Documentation index
 
