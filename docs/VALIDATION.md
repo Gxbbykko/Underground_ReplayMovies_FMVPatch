@@ -1,36 +1,36 @@
-# FMVFix validation
+# Validation
 
-## Compatibility and implementation status
+[← FMVFix overview](../README.md) · [Compatibility fixes](COMPATIBILITY_FIXES.md) · [Engineering history](ENGINEERING_HISTORY.md)
 
-The final project record treats Xbox-to-PC `.mad` compatibility as implemented within the native Underground movie lifecycle. The later MP4 source audit reports all **six frozen compatibility functions unchanged** from the established baseline.
+## Distinct evidence types
 
-These are separate forms of evidence:
+The evidence for Xbox compatibility and high-resolution picture substitution must **not** be conflated.
 
-| Evidence | What it supports | What it does not prove |
-| --- | --- | --- |
-| PC/Xbox debugger comparisons | Identification of movie activation, stream parsing, presentation, and teardown boundaries. | Every Xbox cinematic works on every PC game executable. |
-| Subsequent runtime movie reports | Frame-clock progression and successful integrated picture substitution for the sampled movie set. | Pixel-perfect visual assessment on all displays and all tiers. |
-| Frozen-function source audit | The six compatibility functions were retained during later production configuration changes. | A new native Windows/MSVC binary was compiled and played in that audit environment. |
+| Evidence | Supported conclusion | Qualification |
+| :--- | :--- | :--- |
+| Matched PC/Xbox movie debugger comparisons | Platform divergence boundaries identified across admission, parsing, decode and presentation. | Not an all-executable/all-asset certification. |
+| Completed compatibility implementation | Final project handoff treats Xbox `.mad` support as implemented. | Applies to documented English PC v1.4 x86 engineering baseline. |
+| Six frozen-function source comparison | Xbox-to-PC core preserved through later optional MP4 changes. | A structural/source check, not itself a new live Windows test. |
+| Stage 2.5.3 combined playback reports | MP4 picture reached native presentation with exact movie serials. | Tests picture-substitution behavior, **not** parser admission counts. |
+| Supplied archived release build/log | A later Windows/x86 FMVFix binary and successful build log existed in the 2026-10-09 handoff. | This editorial pass did not compile or execute it. |
 
-## Last reported integrated test scope
+## Measured integrated sessions
 
-The Stage 2.5.3 integrated movie-validation record reports:
+| Stage 2.5.3 measurement | 1080p | 4K |
+| :--- | ---: | ---: |
+| Movies represented | 20 | 15 |
+| Native MAD serials | 9,931 | 5,610 |
+| Exact MP4 substitutions | 9,922 | 5,583 |
+| First serials not substituted | 9 | 27 |
+| Decoder failures | 0 | 0 |
+| Texture upload/binding failures | 0 | 0 |
 
-- **1080p:** 20 movies, 9,931 native MAD frame serials, 9,922 exact MP4 frame hits.
-- **4K:** 15 **reported** movies, 5,610 native MAD frame serials, 5,583 exact MP4 frame hits.
-- **Decoder errors:** zero in the reported tests.
-- **Texture upload/binding failures:** zero in the reported tests.
+These are **FMVPatch** picture measurements over the integrated native compatibility framework. See the [FMVPatch validation page](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/VALIDATION.md) for the exact frame and prewarm interpretation.
 
-Those figures measure the optional **FMVPatch** picture layer running over the retained native compatibility system. They must not be described as a standalone Xbox `.mad` parser acceptance count. See the [FMVPatch validation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/VALIDATION.md) for the precise frame-hit interpretation and startup misses.
+## Source audit versus later build evidence
 
-## Production-source qualification
+The notebook's quiet-production source handoff explicitly notes that a native MSVC compile was unavailable **in that environment**. A subsequent user-supplied project archive separately contains a **successful Windows Release build log and valid 32-bit `FMVFix.asi`**. Those facts are compatible: they refer to different checkpoints. Neither establishes an additional clean build or playback run performed during this documentation editing pass.
 
-The subsequent quiet-production configuration disabled detailed routine reports while retaining real-error messages and native fallback. The notebook records a structural/source-level audit and states that a **native MSVC build was unavailable** in that audit environment. That limitation applies to the later production-source audit, not retroactively to earlier Stage 2.5.3 playback reports.
+## Compatibility limits
 
-## Supported baseline
-
-English Need for Speed: Underground (2003) PC v1.4 **32-bit**. Other executable variants require independent validation.
-
-No new runtime tests were conducted for this documentation revision.
-
-Related: [Architecture](ARCHITECTURE.md)
+Only the **English PC v1.4 x86** baseline is documented as supported. No public claim is made for other game executables, languages, graphics wrappers, plugin stacks or performance on arbitrary hardware. The recorded specific `NA_BOOT` framing correction should be checked in the tested Widescreen Fix cropped-mode geometry rather than generalized to other modes.

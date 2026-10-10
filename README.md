@@ -1,46 +1,53 @@
 # FMVFix
 
-**Engineering status:** Xbox `.mad` compatibility framework completed; integrated FMV runtime preserved.
+**Xbox-to-PC movie compatibility · Completed native framework**
 
-FMVFix adapts Xbox-origin cinematic `.mad` playback to Need for Speed: Underground (2003)'s **native PC movie subsystem**. The investigation traced differences through movie activation, buffered container parsing, stream/decode handling, picture presentation, and teardown. The result is an engine-compatibility layer, not an external player.
+FMVFix adapts Xbox-origin `.mad` cinematics to the original **Need for Speed: Underground (2003) PC FMV subsystem**. The objective is native playback compatibility, preserving the game's movie identity, timing, audio, skip and teardown behavior rather than launching an external player.
 
-## Responsibilities
+> [!IMPORTANT]
+> The optional high-resolution playback code documented in **[FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)** is integrated into **FMVFix**. FMVPatch is a distinct documentation branch, **not a third separately built ASI**.
 
-- Preserve the game's own **movie start, frame clock, audio, skip, and return lifecycle**.
-- Accommodate Xbox-origin `.mad` data where the original PC path diverged.
-- Keep the validated Xbox-to-PC compatibility functions stable while integrating optional picture substitution.
-- Fail safely back to native cinematic presentation when an optional MP4 replacement is unavailable or late.
+## What FMVFix owns
 
-## Relationship with FMVPatch
+| Layer | Responsibility |
+| :--- | :--- |
+| Native compatibility | Trace and accommodate Xbox-vs-PC `.mad` stream/parser and decoder-path differences. |
+| Native lifecycle | Keep Underground's own movie start, playback timing, soundtrack, skipping, return and cleanup. |
+| Optional picture substitution | Supply the FMVPatch path for matched 1080p/4K MP4 frames while preserving native fallback. |
+| Failure behavior | Keep the native `.mad` picture when an optional MP4 replacement is missing, late or unready. |
 
-[FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch) documents the **optional 1080p/4K MP4 replacement-video path** inside the final FMVFix implementation. It is not a third standalone plugin. Offline AI-upscaled movie assets are supplied separately by the user; the engine does **not** perform AI upscaling during playback.
+## Runtime video modes
 
-The engineering record distinguishes three runtime selections in `FMVFix.ini`: `Mode=Xbox` uses the native compatibility path without MP4 substitution, while `Mode=1080p` and `Mode=4K` select the respective pre-prepared MP4 tiers. The real INI remains private pending publication review.
+| `Mode` | Picture behavior |
+| :--- | :--- |
+| `Xbox` | Xbox `.mad` compatibility **without** optional MP4 substitution. |
+| `1080p` | Use a prepared 1080p HEVC MP4 frame **only** when it matches the native frame serial. |
+| `4K` | Use a prepared 4K HEVC MP4 frame **only** when it matches the native frame serial. |
 
-## Evidence and limits
+The original `.mad` still controls the movie lifecycle in all three modes. Tier files and the private runtime INI are **not** published here.
 
-The validated native lifecycle retains the original movie timing and normal teardown. In the later **Stage 2.5.3** movie-substitution audit, the decoder/renderer successfully processed a 20-movie 1080p set and a **15-movie reported 4K subset**. The last reported limitation is out-of-order startup prewarming, **not** a blanket assertion that every MP4 frame always replaces the native `.mad` frame.
+## Evidence and qualification
 
-The subsequent quiet production-source configuration disabled routine diagnostic reports and introduced category-deduplicated error dialogs. Its **source-level audit is recorded**, but the notebook explicitly states that a new native Windows/MSVC build was not performed in that audit environment. Do not interpret that source audit alone as a fresh production-binary runtime test.
+The Xbox-to-PC compatibility layer was documented and subsequently kept source-identical across **six frozen compatibility functions** during optional MP4 work. The final integrated Stage 2.5.3 report covers **20 movies at 1080p** and **15 reported movies at 4K**, with no decoder or texture upload/binding failures in those sessions. These figures validate the picture-substitution layer in its reported sessions—not universal Xbox parser compatibility on arbitrary executables.
 
-## Documentation
+A later production-oriented source snapshot disabled routine diagnostic reports and retained errors for genuine decoder, file, hook or texture failures. An archived Windows build exists in the project handoff, but **no new gameplay run** was performed solely to prepare these public pages. See [Validation](docs/VALIDATION.md) for the distinction.
 
-| Subject | Page |
-| --- | --- |
-| Ownership and lifecycle | [Architecture](docs/ARCHITECTURE.md) |
-| Platform comparisons | [Xbox vs PC](docs/XBOX_VS_PC.md) |
-| Movie format | [MAD findings](docs/MAD_FORMAT.md) |
+## Documentation index
+
+| Topic | Page |
+| :--- | :--- |
+| System overview | [Architecture](docs/ARCHITECTURE.md) |
+| Platform comparison | [Xbox vs PC](docs/XBOX_VS_PC.md) |
+| Format observations | [MAD format](docs/MAD_FORMAT.md) |
 | Parser and decoder | [Parser and decoder](docs/PARSER_AND_DECODER.md) |
-| Engine return path | [Native lifecycle](docs/NATIVE_LIFECYCLE.md) |
-| Compatibility fixes | [Compatibility fixes](docs/COMPATIBILITY_FIXES.md) |
-| Validation scope | [Validation](docs/VALIDATION.md) |
-| Development record | [Engineering history](docs/ENGINEERING_HISTORY.md) |
-| Build-publication status | [Build notes](docs/BUILDING.md) |
+| Compatibility corrections | [Compatibility fixes](docs/COMPATIBILITY_FIXES.md) |
+| Movie start/return | [Native lifecycle](docs/NATIVE_LIFECYCLE.md) |
+| Verification | [Validation](docs/VALIDATION.md) |
+| Investigation timeline | [Engineering history](docs/ENGINEERING_HISTORY.md) |
+| Build provenance | [Build notes](docs/BUILDING.md) |
 
-Some specialized linked pages remain editorial outlines pending targeted evidence review; this pass details the architecture and validation pages.
+## Availability
 
-## Availability and compatibility
+Documented target: **English PC v1.4 32-bit (`x86`)**. No C++ source, Visual Studio projects, actual INI, `.asi`, original movies or upscaled MP4s are distributed in this branch. User-ready plugin releases are reserved for **Nexus Mods**.
 
-The public testing baseline is the **English PC v1.4 x86 executable**. FMVFix source, Visual Studio projects, real INIs, movie assets, and compiled `.asi` are **not** published on GitHub. Compiled user releases are planned for **Nexus Mods**.
-
-[Main repository hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
+[← Project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVPatch documentation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
