@@ -7,7 +7,23 @@
 [Explore ReplayMovies](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/ReplayMovies) · [Explore FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) · [Explore FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
 
 > [!IMPORTANT]
-> This repository is a **documentation-first engineering archive**, not a download mirror. Installable plugin releases are intended for **Nexus Mods**; no release pages are linked until they exist. Source code, binaries and copyrighted video assets are not included here.
+> This repository is a **documentation-first engineering archive**, not a download mirror. Installable plugin releases are intended for **Nexus Mods**; no release pages are linked until they exist. Source code, binaries and original movie assets are not included here; selected in-game screenshots are used only to document the interface and playback modes.
+
+## In-game screenshots
+
+**ReplayMovies** adds the menu option and an in-game cinematic browser. These are captures of the running game—not conceptual mock-ups.
+
+| Native Main Menu | ReplayMovies submenu |
+| :---: | :---: |
+| ![ReplayMovies installed as an option in the game Main Menu](https://raw.githubusercontent.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/ReplayMovies/assets/screenshots/main-menu.webp) | ![ReplayMovies cinematic selection submenu](https://raw.githubusercontent.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/ReplayMovies/assets/screenshots/sub-menu.webp) |
+
+**Cinematic presentation** — an illustrative capture of `E3_TITLE` in the three documented modes:
+
+| Xbox mode | 1080p mode | 4K mode |
+| :---: | :---: | :---: |
+| ![E3_TITLE captured in Xbox mode](https://raw.githubusercontent.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/FMVFix/assets/screenshots/xbox/E3_TITLE.webp) | ![E3_TITLE captured in 1080p mode](https://raw.githubusercontent.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/FMVPatch/assets/screenshots/1080p/E3_TITLE.webp) | ![E3_TITLE captured in 4K mode](https://raw.githubusercontent.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/FMVPatch/assets/screenshots/4k/E3_TITLE.webp) |
+
+All images are user-provided **2560 × 1440 screen captures**. The Xbox/1080p/4K labels identify the selected **movie playback tier**, not the screenshot pixel dimensions. Stills are illustrative, not a controlled same-frame quality benchmark or proof of runtime frame-sync statistics. See the [ReplayMovies interface](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/ReplayMovies/docs/FRONTEND_INTEGRATION.md) and [FMVPatch mode comparison](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/VIDEO_MODES.md) for more images.
 
 ## At a glance
 
@@ -74,4 +90,4 @@ Start from a branch README, follow its topical `docs/` index and consult its val
 
 Project documentation and authored integration work: **Gxbbykko**. Investigation was informed by **Extra Options** (ExOpts Team) and the **Widescreen Fix** work associated with **ThirteenAG**. These remain distinct third-party projects; references here do not imply authorship, redistribution permission, or unconditional compatibility. The tested `NA_BOOT` picture-framing path is especially sensitive to the recorded Widescreen Fix cropped-mode geometry.
 
-The game, original FMVs, brands, and all other proprietary assets remain the property of their respective rights holders. See [LICENSE](LICENSE) for the repository's published license; it does not license those third-party assets.
+The user-provided in-game screenshots are illustrative captures, not redistributable standalone movie assets. The game, original FMVs, brands, and all other proprietary assets remain the property of their respective rights holders. See [LICENSE](LICENSE) for the repository's published license; it does not license those third-party assets.
