@@ -1,4 +1,4 @@
-# Chapter II — FMVFix
+# FMVFix
 
 **Status:** Completed Xbox `.mad` compatibility engineering milestone; documentation chapter.
 
@@ -20,4 +20,4 @@ FMVFix addresses Xbox movie compatibility within Need for Speed: Underground (20
 
 The C++/Visual Studio source is **not public yet** while the repository is being finalized. No installable `.asi` is hosted on GitHub. Ready-to-install releases are reserved for Nexus Mods when published. Configuration examples remain under review and are not yet published.
 
-[← Main project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [Chapter III — FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
+[← Main project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
