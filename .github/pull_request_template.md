@@ -5,9 +5,9 @@ Describe the documentation or repository-structure change.
 ## Affected branch
 
 - [ ] `main` — publication hub
-- [ ] `ReplayMovies` — Chapter I
-- [ ] `FMVFix` — Chapter II
-- [ ] `FMVPatch` — Chapter III
+- [ ] `ReplayMovies` — native cinematic replay
+- [ ] `FMVFix` — Xbox compatibility
+- [ ] `FMVPatch` — AI-upscaled playback
 
 ## Evidence and validation
 
