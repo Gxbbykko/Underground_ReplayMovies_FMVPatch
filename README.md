@@ -1,4 +1,4 @@
-# Chapter I — ReplayMovies
+# ReplayMovies
 
 **Status:** Completed engineering milestone; maintenance/documentation chapter.
 
