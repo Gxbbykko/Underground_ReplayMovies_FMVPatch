@@ -2,7 +2,7 @@
 
 Describe the documentation or repository-structure change.
 
-## Affected chapter
+## Affected branch
 
 - [ ] `main` — publication hub
 - [ ] `ReplayMovies` — Chapter I

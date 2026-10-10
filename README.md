@@ -1,12 +1,12 @@
 # Need for Speed: Underground (2003) — ReplayMovies × FMVFix
 
-Public technical documentation hub for three connected engineering chapters developed for **Need for Speed: Underground (2003), PC**.
+Public technical documentation hub for three connected engineering projects developed for **Need for Speed: Underground (2003), PC**.
 
-| Engineering chapter | Focus | Navigate |
+| Engineering branch | Focus | Navigate |
 | --- | --- | --- |
-| **I — ReplayMovies** | Native seventh Main Menu option, career cinematic replay, and frontend lifecycle | [ReplayMovies branch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/ReplayMovies) |
-| **II — FMVFix** | Xbox `.mad` compatibility with Underground's PC movie subsystem | [FMVFix branch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) |
-| **III — FMVPatch** | Previously AI-upscaled 1080p/4K MP4 playback integration and frame synchronization | [FMVPatch branch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch) |
+| **ReplayMovies** | Native seventh Main Menu option, career cinematic replay, and frontend lifecycle | [ReplayMovies branch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/ReplayMovies) |
+| **FMVFix** | Xbox `.mad` compatibility with Underground's PC movie subsystem | [FMVFix branch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) |
+| **FMVPatch** | Previously AI-upscaled 1080p/4K MP4 playback integration and frame synchronization | [FMVPatch branch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch) |
 
 ## Publication status
 
@@ -24,4 +24,4 @@ No original PC/Xbox `.mad` files, game assets, upscaled movie videos, or compile
 
 ## Repository layout
 
-`main` is the publication/navigation hub. The three named branches are **engineering chapters**, not automatic merge candidates. Technical corrections and documentation contributions can be discussed using GitHub Issues and pull requests once the corresponding templates have been reviewed and enabled.
+`main` is the publication/navigation hub. The three named branches are **engineering areas**, not automatic merge candidates. Technical corrections and documentation contributions can be discussed using GitHub Issues and pull requests once the corresponding templates have been reviewed and enabled.
