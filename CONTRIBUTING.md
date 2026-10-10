@@ -2,7 +2,7 @@
 
 [← Project overview](README.md) · [Support](SUPPORT.md) · [Security](SECURITY.md)
 
-Thanks for helping improve the accuracy and presentation of this Need for Speed: Underground (2003) engineering archive. The repository currently accepts **documentation-oriented** work; private implementation source and build products are **not** open for contribution through public GitHub commits.
+Thanks for helping improve the accuracy and presentation of this Need for Speed: Underground (2003) engineering archive. The repository currently accepts **documentation-oriented** work; ReplayMovies and FMVFix source trees are published on their respective branches. Proposals must stay within the two authorized source areas; compiled builds and game/movie assets remain excluded.
 
 ## Choose the right branch
 
@@ -26,7 +26,7 @@ These branches are **independent documentation areas**; do not propose merging o
 
 ## Do not publish
 
-- Privately withheld `.cpp`, `.h`, `.vcxproj`, `.slnx`, source archives or debug symbols.
+- Unreviewed third-party or extra `.cpp`, `.h`, `.vcxproj`, `.slnx` files, private source archives or debug symbols outside the exact published source allowlists.
 - `.asi`/`.dll` builds, executable game files, original Xbox/PC `.mad` cinematics, upscaled MP4s or raw frame captures.
 - Local configuration INIs, personal player profiles, credentials, raw debugger logs or Git database/worktree metadata.
 - Unverified claims that a source-only check equals a live gameplay test.

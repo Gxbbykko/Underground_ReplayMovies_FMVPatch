@@ -56,6 +56,46 @@ jobs:
           documents = re.compile(r'^docs/[a-zA-Z0-9_./-]+\.md$')
           forms_and_workflows = re.compile(r'^\.github/(ISSUE_TEMPLATE|workflows)/[a-zA-Z0-9_-]+\.ya?ml$')
           restricted = re.compile(r'(^|/)(source|src|private|configuration|Release|Debug|\.vs)/|\.(cpp|c|h|hpp|vcxproj|sln|slnx|asi|dll|exe|pdb|ini|mad|mp4|mkv|zip|7z|rar)$', re.I)
+          allowed_source = {
+              'ReplayMovies': {
+                  'Addresses.h',
+                  'CandidateSafetyHook.cpp',
+                  'CandidateSafetyHook.h',
+                  'CapacityHook.cpp',
+                  'CapacityHook.h',
+                  'dllmain.cpp',
+                  'framework.h',
+                  'GenerationHook.cpp',
+                  'GenerationHook.h',
+                  'MemoryPatch.cpp',
+                  'MemoryPatch.h',
+                  'pch.cpp',
+                  'pch.h',
+                  'ReplayMoviesBuilder.cpp',
+                  'ReplayMoviesBuilder.h',
+                  'ReplayMoviesCatalog.h',
+                  'ReplayMoviesConfig.cpp',
+                  'ReplayMoviesConfig.h',
+                  'ReplayMoviesProfileStorage.cpp',
+                  'ReplayMoviesProfileStorage.h',
+                  'ReplayMoviesProgressionHook.cpp',
+                  'ReplayMoviesProgressionHook.h',
+                  'ReplayMovies.slnx',
+                  'ReplayMovies.vcxproj',
+                  'ReplayMovies.vcxproj.filters',
+              },
+              'FMVFix': {
+                  'dllmain.cpp',
+                  'FMVFix.cpp',
+                  'FMVFix.h',
+                  'framework.h',
+                  'pch.cpp',
+                  'pch.h',
+                  'FMVFix.slnx',
+                  'FMVFix.vcxproj',
+                  'FMVFix.vcxproj.filters',
+              },
+          }
           max_screenshot_bytes = 8 * 1024 * 1024
           failures = []
 
@@ -65,6 +105,8 @@ jobs:
           for branch, ref in branches.items():
               paths = git('ls-tree', '-r', '--name-only', ref).splitlines()
               for path in paths:
+                  if path in allowed_source.get(branch, set()):
+                      continue
                   if restricted.search(path):
                       failures.append(f'{branch}: restricted tracked path: {path}')
                   elif path in top_level or documents.fullmatch(path):
