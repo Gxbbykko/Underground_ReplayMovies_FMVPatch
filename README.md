@@ -1,57 +1,77 @@
-# Need for Speed: Underground (2003) — ReplayMovies × FMVFix
+# Need for Speed: Underground (2003)
 
-Technical documentation for three connected reverse-engineering and cinematic-playback projects targeting **Need for Speed: Underground (2003), PC**.
+### ReplayMovies · FMVFix · FMVPatch
 
-This repository separates project documentation into named Git branches. The branches are permanent areas of documentation, **not feature branches intended for automatic merging**.
+**Native cinematic replay, Xbox movie compatibility, and high-resolution FMV presentation for the English PC v1.4 (x86) release.**
 
-## Explore the projects
+[Explore ReplayMovies](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/ReplayMovies) · [Explore FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) · [Explore FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
 
-| Branch | What it does | Engineering status |
-| --- | --- | --- |
-| [ReplayMovies](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/ReplayMovies) | Adds **REPLAY MOVIES** to the native Main Menu, with career-cinematic selection and profile-aware unlocks. | Feature-complete; maintenance only. |
-| [FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) | Adapts Xbox-origin `.mad` playback to the PC game's existing cinematic engine. | Compatibility implementation completed; integrated runtime baseline preserved. |
-| [FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch) | Documents playback substitution using **previously AI-upscaled** 1080p/4K HEVC MP4 movies. | Integrated runtime validated, with a known selection-order prewarm limitation. |
+> [!IMPORTANT]
+> This repository is a **documentation-first engineering archive**, not a download mirror. Installable plugin releases are intended for **Nexus Mods**; no release pages are linked until they exist. Source code, binaries and copyrighted video assets are not included here.
 
-**There are two primary plugin implementations, not three:** ReplayMovies is its own system, while FMVPatch's video-substitution functionality belongs to the final FMVFix implementation. FMVPatch is a separate documentation area, **not a third standalone `.asi`**.
+## At a glance
 
-## How the systems relate
+| Branch | Purpose | Engineering status | Documentation |
+| :--- | :--- | :--- | :--- |
+| **[ReplayMovies](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/ReplayMovies)** | Adds **REPLAY MOVIES** as a seventh native Main Menu option; provides a 17-film career catalog with per-profile unlocks. | **Feature complete · maintenance only** | [Architecture](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/ReplayMovies/docs/ARCHITECTURE.md) · [Validation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/ReplayMovies/docs/VALIDATION.md) |
+| **[FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix)** | Adapts Xbox-origin `.mad` cinematics to the native PC movie subsystem. | **Compatibility framework completed** | [Compatibility](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVFix/docs/COMPATIBILITY_FIXES.md) · [Validation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVFix/docs/VALIDATION.md) |
+| **[FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)** | Documents optional playback of **offline AI-upscaled 1080p/4K HEVC MP4** picture through FMVFix. | **Runtime validated · known prewarm limitation** | [Pipeline](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/UPSCALING_PIPELINE.md) · [Validation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/VALIDATION.md) |
 
-**ReplayMovies** extends the game's frontend using native menu structures. It exposes 17 career cinematics through a catalog, with separate User and Developer modes. User mode reflects movies encountered by the current profile; Developer mode allows catalog testing without manufacturing career progress. The automatic startup-intro sequence is outside the ReplayMovies career catalog.
+`main` is the publication hub. The other three named branches are **permanent documentation areas, not branches to merge automatically**. There are **two primary ASI implementations**, not three: ReplayMovies and FMVFix. FMVPatch functionality belongs to the integrated FMVFix implementation.
 
-**FMVFix** addresses the gap between Xbox movie assets and the PC movie subsystem while retaining the game's native cinematic start, timing, audio, skip, and teardown behavior.
+## How the systems fit together
 
-**FMVPatch** supplements that foundation with an optional video layer. Its MP4 frames are matched to the native movie clock and presented through the existing rendering path. If replacement data is unavailable or late, the native `.mad` picture remains the fallback. AI processing is performed **offline** when creating the video assets; no live AI upscaling runs in-game.
+```mermaid
+flowchart TD
+    A[Underground PC frontend] --> B[ReplayMovies native menu + career catalog]
+    A --> C[Native movie start]
+    B --> C
+    C --> D[Xbox/PC MAD compatibility - FMVFix]
+    D --> E[Native MAD clock, audio, skip and teardown]
+    E --> F{Video mode}
+    F -->|Xbox| G[Native MAD picture]
+    F -->|1080p or 4K| H[Decode prepared HEVC MP4 picture]
+    H --> I{Exact frame available?}
+    I -->|Yes| J[Present matching MP4 frame]
+    I -->|No| G
+```
 
-## Recorded validation highlights
+- **ReplayMovies** extends the game's own frontend. Its User view contains only career movies encountered by the active profile; its Developer view exposes the catalog without creating profile unlocks.
+- **FMVFix** retains the native game's movie lifecycle while addressing platform-specific Xbox `.mad` handling.
+- **FMVPatch** changes the displayed picture when a matching prepared MP4 frame is ready. It does **not** run AI upscaling during gameplay, change the native movie clock, replace the soundtrack, or disable native fallback.
 
-| Area | Evidence from the retained engineering record |
-| --- | --- |
-| ReplayMovies menu reconstruction | **15/15** fresh `MU_Main` reconstruction stress passes for the resolved descriptor-ownership issue. |
-| ReplayMovies progression | Fresh-profile empty catalog, one-row behavior, profile persistence, natural/skip unlock commits, and native Trailers isolation recorded as closed. |
-| FMVPatch 1080p | **20 movies** reported; **9,922 / 9,931** native movie-frame serials replaced by exact MP4 matches. |
-| FMVPatch 4K | **15 movies** reported; **5,583 / 5,610** native movie-frame serials replaced by exact MP4 matches. |
-| Playback errors in those reports | **0** decoder failures and **0** texture upload/binding failures in both reported groups. |
+## Evidence highlights
 
-These figures are **test-run measurements**, not promises of universal performance, full 4K catalog coverage, or zero fallback under arbitrary selection order. Nine out-of-order selections exposed an initial-frame prewarm limitation; playback continued using native fallback until the asynchronous MP4 decoder caught up. See [FMVPatch validation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/VALIDATION.md) and [known limitations](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/KNOWN_LIMITATIONS.md).
+| Recorded measurement | Result | Scope |
+| :--- | ---: | :--- |
+| ReplayMovies fresh `MU_Main` reconstruction stress checks | **15 / 15 passed** | Closure of the semantic descriptor-ownership defect; not a general compatibility score. |
+| ReplayMovies career-film catalog | **17 entries** | Excludes the three automatic introduction films. |
+| 1080p exact MP4 picture matches | **9,922 / 9,931** | Stage 2.5.3 reports, **20 movies**. |
+| 4K exact MP4 picture matches | **5,583 / 5,610** | Stage 2.5.3 reports, **15 movies**; not a 20-movie 4K pass. |
+| Decoder / texture upload or binding failures | **0 / 0** | Within the two reported sets only. |
 
-## Compatibility scope
+> [!NOTE]
+> Nine out-of-predicted-order movie selections had initial-frame fallback: one native serial at 1080p or three at 4K, before MP4 decoding caught up. The source and reports do **not** support a claim of zero fallback for arbitrary movie selection. See [validation](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/VALIDATION.md) and [limitations](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/FMVPatch/docs/KNOWN_LIMITATIONS.md).
 
-The documented reverse-engineering baseline is the **English PC v1.4 32-bit (`x86`) executable**. Other executables, languages, distributions, graphics wrappers, and combinations of third-party fixes are not presumed compatible unless separately tested.
+## Compatibility and distribution
 
-## Publication and downloads
+| Item | Policy |
+| :--- | :--- |
+| Target executable | **Need for Speed: Underground (2003), English PC v1.4, 32-bit (`x86`)**. |
+| Other game versions or localization | **Not automatically supported** without independent validation. |
+| Source and project files | Currently held privately pending an explicit publication decision. |
+| Installable `.asi` modules | Intended for **Nexus Mods** rather than GitHub. |
+| Original `.mad` files, game executables and upscaled MP4s | **Never included** in this documentation repository. |
+| Configuration examples | Under review; actual local INIs should not be uploaded as part of a documentation push. |
 
-- **GitHub:** technical documentation and project history. C++ source files, Visual Studio projects, project-specific configuration examples, and debug archives remain unpublished until expressly approved.
-- **Nexus Mods:** intended home for ready-to-install compiled plugins and their support information. Links will be added when actual mod pages are live.
-- **Game and movie assets:** no original Xbox/PC `.mad` assets, game executables, proprietary data, or upscaled MP4 movie files are distributed in this repository.
+## Reading and contributing
 
-The project builds on investigation of the original game and references work by the **Extra Options** and **Widescreen Fix** communities. Those are separate third-party projects; their authorship should not be confused with the code maintained here. Precise compatibility and acknowledgments will be expanded once individually reviewed.
+The engineering history is chronological and contains many **superseded hypotheses**. Public pages distinguish measured runtime behavior, structural/source checks, and ideas that remain proposals. The current state follows the most recent validated checkpoint, not intermediate debugger failures.
 
-## Reading the engineering documentation
+Start from a branch README, follow its topical `docs/` index and consult its validation page for exactly what was tested. Documentation corrections are welcome under [Contributing](CONTRIBUTING.md); support boundaries are in [Support](SUPPORT.md), and disclosure rules are in [Security](SECURITY.md). See the [documentation changelog](CHANGELOG.md) for editorial milestones.
 
-These pages separate **runtime-confirmed**, **statically established**, **inferred**, and **superseded/failed** findings. Historical debugger experiments may reflect intermediate states that were later resolved. The latest validated checkpoints, not older troubleshooting notes, determine current status.
+## Credits and rights
 
-Start with the README on each named branch, then follow its technical-documentation index. `main` remains a public navigation and publication hub.
+Project documentation and authored integration work: **Gxbbykko**. Investigation was informed by **Extra Options** (ExOpts Team) and the **Widescreen Fix** work associated with **ThirteenAG**. These remain distinct third-party projects; references here do not imply authorship, redistribution permission, or unconditional compatibility. The tested `NA_BOOT` picture-framing path is especially sensitive to the recorded Widescreen Fix cropped-mode geometry.
 
-## License and rights
-
-See [LICENSE](LICENSE) for the repository's published license text. Third-party trademarks, game executable code, and copyrighted video assets remain the property of their respective rights holders; a repository license does not grant rights to distribute those assets.
+The game, original FMVs, brands, and all other proprietary assets remain the property of their respective rights holders. See [LICENSE](LICENSE) for the repository's published license; it does not license those third-party assets.
