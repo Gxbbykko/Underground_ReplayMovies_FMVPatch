@@ -2,6 +2,14 @@
 
 [← FMVPatch overview](../README.md) · [Performance](PERFORMANCE.md) · [Known limitations](KNOWN_LIMITATIONS.md)
 
+## Visual demonstration versus measured validation
+
+| 1080p-mode `E3_TITLE` | 4K-mode `E3_TITLE` |
+| :---: | :---: |
+| ![E3_TITLE in 1080p playback mode](../assets/screenshots/1080p/E3_TITLE.webp) | ![E3_TITLE in 4K playback mode](../assets/screenshots/4k/E3_TITLE.webp) |
+
+These stills illustrate output from the respective user-labeled playback modes, but do **not** prove per-frame synchronization, error-free decoding, or native fallback behavior. The measurements below come from the recorded Stage 2.5.3 sessions. Browse all five subjects in the [video-mode gallery](VIDEO_MODES.md#screenshot-gallery--xbox--1080p--4k).
+
 ## Consolidated Stage 2.5.3 results
 
 The last consolidated runtime report includes **20 1080p films** and **15 4K films**. It compares the **native MAD movie serials** observed by the game with the exact **MP4 picture serials** that reached the chosen presentation boundary.

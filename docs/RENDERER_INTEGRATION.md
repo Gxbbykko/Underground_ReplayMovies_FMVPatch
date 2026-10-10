@@ -2,6 +2,14 @@
 
 [← FMVPatch overview](../README.md) · [Architecture](ARCHITECTURE.md) · [Frame synchronization](FRAME_SYNCHRONIZATION.md)
 
+## Presentation examples
+
+| Prepared 1080p picture tier | Prepared 4K picture tier |
+| :---: | :---: |
+| ![01_DAY presented during 1080p-mode playback](../assets/screenshots/1080p/01_DAY.webp) | ![01_DAY presented during 4K-mode playback](../assets/screenshots/4k/01_DAY.webp) |
+
+Both examples are 2560 × 1440 **desktop captures** of a movie picture presented by the game. The mode labels reflect the selected video tier. Visual examples do not substitute for the logged Direct3D9 upload and serial-match evidence.
+
 ## Picture replacement, not renderer replacement
 
 The project keeps Underground's existing **Direct3D9 movie presentation path**. The FMVFix-integrated MP4 layer supplies an alternate decoded image only at a vetted movie draw boundary. Native movie session ownership, soundtrack, frame clock and teardown remain intact.

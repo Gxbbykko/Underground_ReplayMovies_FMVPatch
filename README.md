@@ -7,6 +7,27 @@ FMVPatch documents **offline AI-upscaled** 1080p and 4K HEVC MP4 playback in Nee
 > [!NOTE]
 > The native Xbox/PC `.mad` path continues to own movie timing, audio, frame serials, skipping and teardown. MP4 is an **optional picture source**. Native MAD picture remains the safe fallback.
 
+## Visual comparison — selected movie frames
+
+The same movie IDs are illustrated in Xbox, 1080p and 4K playback modes. The Xbox reference screenshots are stored on the [FMVFix branch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix); the high-resolution mode captures are included here.
+
+**`E3_TITLE` — engine detail**
+
+| Xbox mode | 1080p mode | 4K mode |
+| :---: | :---: | :---: |
+| ![Xbox-mode capture: E3_TITLE](https://raw.githubusercontent.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/FMVFix/assets/screenshots/xbox/E3_TITLE.webp) | ![1080p-mode capture: E3_TITLE](assets/screenshots/1080p/E3_TITLE.webp) | ![4K-mode capture: E3_TITLE](assets/screenshots/4k/E3_TITLE.webp) |
+
+**`01_DAY` — wheel detail**
+
+| Xbox mode | 1080p mode | 4K mode |
+| :---: | :---: | :---: |
+| ![Xbox-mode capture: 01_DAY](https://raw.githubusercontent.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/FMVFix/assets/screenshots/xbox/01_DAY.webp) | ![1080p-mode capture: 01_DAY](assets/screenshots/1080p/01_DAY.webp) | ![4K-mode capture: 01_DAY](assets/screenshots/4k/01_DAY.webp) |
+
+> [!NOTE]
+> All screenshots are **2560 × 1440 desktop captures**. Mode names refer to the **video source tier**, not screenshot file dimensions. The selected stills are not guaranteed to represent identical native frame serials or identical display scaling. Visual comparison is illustrative; exact frame-matching results come from the runtime reports.
+
+See the [five-scene gallery and mode definitions](docs/VIDEO_MODES.md) for the rest.
+
 ## Pipeline overview
 
 ```mermaid
