@@ -1,22 +1,27 @@
-# Underground_ReplayMovies_FMVPatch
+# Chapter III — FMVPatch
 
-# ReplayMovies successfully made and created, few bugs still present but those addressed issues will be fixed before the Release version is public, please be patient as this project takes time by one man, the wait will be worth it!
+**Status:** Completed upscale/playback integration milestone; documentation chapter.
 
-# FMVFix proved working and made
-(Xbox Port to PC Port FMV)
+FMVPatch documents integration of **previously AI-upscaled** cinematic videos with Underground's native FMV lifecycle. The playback layer uses 1080p/4K MP4 alternatives; it does **not** perform AI upscaling live during gameplay. The engineering record covers video decode, render substitution, synchronization, prewarming, fallback behavior, and final validation.
 
-# Now the development fix of FMVPatch (FMV Upscale) is in progress, once everything proved and patched, the repository will be updated with everything found/fixed/resolved and final form.
+**Implementation relationship:** FMVPatch functionality is integrated in the final FMVFix implementation. This chapter is a technical division, **not a claim that a third standalone `.asi` exists**.
 
-# Xbox vs PC scale parameters ~ They both have the same presentation schedule, but differ in bytes.
+## Documentation index
 
-```text
-decoded Xbox frame: 512 × 256
-┌───────────────────────────────┐
-│ padding / overscan            │
-│   ┌───────────────────────┐   │
-│   │ visible movie region  │   │
-│   │      480 × 240        │   │
-│   └───────────────────────┘   │
-│ padding / overscan            │
-└───────────────────────────────┘
-```
+- [Architecture](docs/ARCHITECTURE.md)
+- [Upscaling pipeline](docs/UPSCALING_PIPELINE.md)
+- [MP4 playback](docs/MP4_PLAYBACK.md)
+- [Video modes](docs/VIDEO_MODES.md)
+- [Renderer integration](docs/RENDERER_INTEGRATION.md)
+- [Frame synchronization](docs/FRAME_SYNCHRONIZATION.md)
+- [Prewarm optimization](docs/PREWARM_OPTIMIZATION.md)
+- [Performance](docs/PERFORMANCE.md)
+- [Known limitations](docs/KNOWN_LIMITATIONS.md)
+- [Engineering history](docs/ENGINEERING_HISTORY.md)
+- [Validation](docs/VALIDATION.md)
+
+## Source and distribution
+
+The integrated FMVFix/FMVPatch implementation source is **not public yet**. No compiled plugins or movie assets are hosted on GitHub. Public installable releases are reserved for Nexus Mods when published.
+
+[← Main project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [Chapter II — FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix)
