@@ -1,36 +1,44 @@
-# FMVPatch architecture
+# Architecture
 
-## What the runtime does—and does not do
+[← FMVPatch overview](../README.md) · [MP4 playback](MP4_PLAYBACK.md) · [Validation](VALIDATION.md)
 
-FMVPatch presents **already-upscaled** video inside the PC game. The AI-upscaling work is an **offline asset-preparation stage**; at runtime the integrated FMVFix implementation performs HEVC/MP4 decoding, frame matching, and picture substitution. It does **not** synthesize new 1080p or 4K content using an AI model while playing.
+## One movie lifecycle, two possible picture sources
 
-The final implementation is a capability of **FMVFix**, not a third standalone plugin.
+FMVPatch is a **picture-substitution layer integrated into FMVFix**. It takes previously prepared HEVC MP4 frames and offers them to the game's movie renderer when they match the **native MAD movie identity and frame serial**. All movie scheduling remains owned by Underground.
 
-## Picture source and timing authority
+```mermaid
+flowchart TD
+    A[Native MAD movie start] --> B[Native frame clock and audio]
+    C[Offline processed HEVC MP4] --> D[Asynchronous video decode]
+    B --> E{Movie ID and serial match?}
+    D --> E
+    E -->|Yes| F[Direct3D9 replacement texture]
+    E -->|No / late| G[Original MAD picture]
+    F --> H[Game-owned presentation / teardown]
+    G --> H
+```
 
-There are two cooperating inputs:
+## Authority and ownership
 
-1. **Native `.mad`:** movie identity, frame serial/timing authority, existing audio, skip, lifecycle transitions, and teardown.
-2. **Prepared MP4:** optional replacement picture corresponding to the movie and selected 1080p/4K tier.
+| Concern | Authoritative layer |
+| :--- | :--- |
+| Which movie is playing | Native MAD request/session. |
+| Frame numbering and playback time | Native movie clock and serial progression. |
+| Soundtrack, skipping and teardown | Original Underground FMV subsystem. |
+| Replacement picture content | Prepared MP4 decoder and verified serial matching. |
+| GPU presentation | Existing Direct3D9 movie rendering path. |
+| Absence of replacement picture | **Native MAD picture fallback**. |
 
-The replacement image is accepted only for the **matching movie and frame serial**. If the optional source is not ready, it is safer to leave the native MAD picture on screen than to present the wrong movie or an incorrectly timed frame.
+The MP4 path is not a second standalone video player, does not control progression, and does not run AI inference during gameplay.
 
-## Startup and decode path
+## Source and render geometry
 
-A start-of-movie prewarm path attempts to make initial replacement frames available before the native picture clock advances. Later frames are produced through an asynchronous decode path. Both must agree on movie identity, decoded-frame geometry, and serial mapping.
+The runtime must respect the **HEVC display aperture**, not assume every coded pixel belongs to the intended picture. The notebook distinguishes a `2176 × 1088` coded frame from a `2160 × 1080` visible output in a validated example. Cropping/framing requirements may also depend on the tested Widescreen Fix configuration, particularly the intro movie `NA_BOOT`.
 
-During the Stage 2.5.3 reporting run, some arbitrary ReplayMovies selections did not match the fixed predicted-next-movie order. Prewarming therefore contained another movie's frames and could not be reused. The fallback was deliberate; the correct decoder caught up after the initial one to three serials.
+## Startup prewarming
 
-## HEVC picture geometry
+A fixed-order predictor attempts to decode startup frames for the movie expected next. If ReplayMovies selects another title, the cached frames are **not** applied to the wrong movie. The decoder starts for the actual title; until a matching frame is ready, presentation falls back to MAD. See [Prewarm optimization](PREWARM_OPTIMIZATION.md).
 
-The Stage 2.5.3 record describes handling of coded HEVC dimensions that include encoder padding. For example, reported 1080p-oriented coded frames may be **2176×1088**, while the valid visible picture is **2160×1080**. The correct display aperture/visible crop must be honored rather than guessed. The notebook reports the corresponding 2160×2160 square example for `E3_TITLE`.
+## Engineering status
 
-The production-source design maintains validation of decoded frame dimensions and a shared visible-picture crop path for prewarm and normal decode. Invalid or unrecognized geometry fails safely to native MAD picture rather than showing padded or displaced output.
-
-## Rendering, failure, and ownership
-
-The integrated layer substitutes picture data through the existing rendering path while avoiding changes to native audio, movie completion, and return. The most recent production-source configuration retains quiet fallback for expected startup misses, while genuine decode, input, resource, and hook-installation faults receive category-deduplicated diagnostics. Detailed runtime report generation was disabled for that production-source variant.
-
-A structural audit of this later variant does **not** by itself establish that it was newly compiled and played; the notebook explicitly notes the lack of native MSVC access during that audit.
-
-Related: [Validation](VALIDATION.md) · [Prewarm optimization](PREWARM_OPTIMIZATION.md) · [Known limitations](KNOWN_LIMITATIONS.md)
+Stage 2.5.3 demonstrates **20 reported 1080p movies** and **15 reported 4K movies**, with zero logged decoder or texture upload/binding errors in those reports. A later production-oriented edit modified routine logging and error reporting without claiming a new runtime pass in that source-audit environment. FMVPatch is not a separately distributed third `.asi`.

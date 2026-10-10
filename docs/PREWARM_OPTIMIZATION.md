@@ -1,37 +1,39 @@
-# FMVPatch prewarm optimization
+# Prewarm optimization
 
-## Purpose
+[← FMVPatch overview](../README.md) · [Known limitations](KNOWN_LIMITATIONS.md) · [Validation](VALIDATION.md)
 
-Initial movie frames may be requested before an asynchronous HEVC decoder has produced the matching MP4 picture. Startup prewarming is designed to make early frames ready so the native MAD clock can advance without a visible substitution gap.
+## Why prewarm exists
 
-The integrated runtime retains **native MAD fallback** if an exact replacement is not ready. It never treats a cached frame for a different movie as a valid substitute.
+HEVC startup can take long enough that a movie's first native serial arrives before its replacement MP4 picture is decoded. The documented optimization prepares frames **ahead of** the expected next cinematic, so the native render path can substitute immediately when the prediction is correct.
 
-## Recorded Stage 2.5.3 policy
+## Recorded Stage 2.5.3 behavior
 
-The observed prewarm strategy predicts a next movie in catalog order. That works when the actual next play matches the prediction, but an arbitrary ReplayMovies selection can violate it.
+The implemented predictor follows a **fixed catalog order**. This works well for the predicted next movie but does not inherently know the title the user may choose next from ReplayMovies.
 
-A recorded example is:
+```text
+Predicted order: 07_GOD → 08_EDD
+Actual selection: 07_GOD → 11_PNK
 
-| Predictor expected | User selected | Consequence |
-| --- | --- | --- |
-| `07_GOD` → `08_EDD` | `07_GOD` → `11_PNK` | Startup cache for `08_EDD` could not be adopted for `11_PNK`; the correct asynchronous decoder took over. |
+Cached startup frames: 08_EDD
+Active movie:          11_PNK
+Result: refuse mismatched cache → native MAD picture → decoder catches up
+```
 
-This is an **identity mismatch**, not evidence of a decoder failure. The MP4 format validation passed for the nine affected titles.
+This refusal is correct: a stale movie's frames must never be misrepresented as the current movie's frames.
 
 ## Measured impact
 
-In the reviewed archive, nine out-of-order titles had startup fallback:
+| Group | Total movies in report | Zero-fallback full runs | Affected out-of-order runs | Initial unique serials not substituted |
+| :--- | ---: | ---: | ---: | ---: |
+| 1080p | 20 | **11** | **9** | **9** |
+| 4K | 15 | **6** | **9** | **27** |
 
-- **1080p:** one initial native MAD serial per affected movie (**9 serials** total).
-- **4K:** three initial serials per affected movie (**27 serials** total).
-- After the startup window, exact replacement progressed normally without recorded decoder or texture-upload failures.
+In the nine affected sessions, **1080p fell back for serial 0**, while **4K fell back for serials 0–2**; later MP4 frames matched. Reported decoder and texture upload/binding errors were zero in both groups.
 
-The 1080p all-catalog report lists 20 movies. The available 4K report lists 15 movies.
+The affected titles were: `11_PNK`, `13_KIT`, `12_BUD`, `09_GBE`, `14_MUT`, `16_RES`, `15_DIK`, `08_EDD` and `17_MET`.
 
-## Proposed future direction
+## Proposed improvement — not a shipped guarantee
 
-The notebook recommends identifying an actual movie-selection event early enough to prewarm **the selected title** before the movie-start call, rather than assuming the following catalog position. This is an architectural recommendation only; the recorded Stage 2.5.3 runtime data does not demonstrate implementation or final validation of that alternative.
+The notebook proposes observing **the actual selected film before native `StartMovie`** and directing prewarm to that film rather than predicting a fixed next entry. That is a sensible **future optimization proposal**, not something the Stage 2.5.3 reports demonstrate as implemented or tested.
 
-The existing decoder, renderer, clock mapping, and native fallback should be treated as stable while any such improvement is investigated.
-
-Related: [Validation](VALIDATION.md) · [Known limitations](KNOWN_LIMITATIONS.md)
+The working decoder/renderer should remain stable until any change has its own reproducible before/after evidence. No claim of universal zero-first-frame fallback is made.

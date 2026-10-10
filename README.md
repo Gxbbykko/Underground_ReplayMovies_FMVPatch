@@ -1,50 +1,56 @@
 # FMVPatch
 
-**Engineering status:** Integrated 1080p/4K cinematic-substitution path validated; documented startup-prewarm limitation.
+**High-resolution cinematic presentation · Integrated with FMVFix**
 
-FMVPatch is the documentation area for playback of **previously AI-upscaled** Need for Speed: Underground (2003) cinematic video through the final FMVFix runtime. The implementation decodes MP4 picture frames and substitutes them at the native movie's presentation boundary. It does **not** perform AI upscaling live and is **not** a separate third `.asi`.
+FMVPatch documents **offline AI-upscaled** 1080p and 4K HEVC MP4 playback in Need for Speed: Underground (2003). Its runtime work is implemented inside FMVFix; there is **no third standalone FMVPatch `.asi`** and **no real-time AI upscaling**.
 
-## Playback design
+> [!NOTE]
+> The native Xbox/PC `.mad` path continues to own movie timing, audio, frame serials, skipping and teardown. MP4 is an **optional picture source**. Native MAD picture remains the safe fallback.
 
-The original `.mad` movie remains responsible for the game's **frame clock, movie identity, audio, skip, and teardown lifecycle**. The optional HEVC MP4 pipeline prepares replacement image frames for 1080p or 4K display; only frames matching the current native movie serial are substituted. Missing, late, or unavailable replacements leave the original MAD picture active.
+## Pipeline overview
 
-The work includes offline preparation, source-to-target frame accounting, decoded-frame availability, renderer integration, frame matching, and startup prewarming. MP4 files and their source-derived captures are **not hosted on GitHub**.
+```mermaid
+flowchart TD
+    A[Source movie frame capture] --> B[Offline upscaling / HEVC MP4 preparation]
+    B --> C[Optional 1080p or 4K MP4 decoder]
+    D[Native MAD movie clock] --> E[Current movie + frame serial]
+    C --> F{Matching decoded frame ready?}
+    E --> F
+    F -->|Yes| G[Direct3D9 replacement picture]
+    F -->|No| H[Native MAD picture]
+```
 
-## Last measured validation
+## Consolidated Stage 2.5.3 report
 
-| Measurement | 1080p | 4K |
-| --- | ---: | ---: |
-| Movies represented by reports | **20** | **15** |
-| Native MAD frame serials | **9,931** | **5,610** |
-| Exact MP4 frame matches | **9,922** | **5,583** |
-| Initial serials not substituted | **9** | **27** |
+| Metric | 1080p | 4K |
+| :--- | ---: | ---: |
+| Movies represented | **20** | **15** |
+| Native movie serials | **9,931** | **5,610** |
+| Exact MP4 substitutions | **9,922** | **5,583** |
+| Initial serials falling back | **9** | **27** |
 | Decoder failures | **0** | **0** |
 | Texture upload/binding failures | **0** | **0** |
 
-The 1080p report covers all **20 movies in the supported catalog**: three intro titles and 17 career cinematics. The available 4K report covers **15 movies**; it is not evidence of a full 20-movie 4K runtime pass.
+The 4K results describe **15 movies**, not a full 20-movie 4K test. Nine out-of-predicted-order ReplayMovies selections used native MAD for their first serial (1080p) or first three serials (4K), then caught up. Read [Validation](docs/VALIDATION.md) and [Known limitations](docs/KNOWN_LIMITATIONS.md) for the complete interpretation.
 
-**Known limitation:** Nine movies were selected outside the fixed predicted prewarm order. In those runs, the first native serial (`0`) fell back in 1080p; 4K fell back for serials `0`–`2`. Afterward the asynchronous decoder caught up, with no reported decoder or texture errors. This limitation is recorded, not concealed.
+## Technical documentation
 
-## Documentation
+| Playback stage | Page |
+| :--- | :--- |
+| Integration boundaries | [Architecture](docs/ARCHITECTURE.md) |
+| Source preparation | [Upscaling pipeline](docs/UPSCALING_PIPELINE.md) |
+| MP4 decode | [MP4 playback](docs/MP4_PLAYBACK.md) |
+| Mode selection | [Video modes](docs/VIDEO_MODES.md) |
+| Frame mapping | [Frame synchronization](docs/FRAME_SYNCHRONIZATION.md) |
+| GPU presentation | [Renderer integration](docs/RENDERER_INTEGRATION.md) |
+| Startup frames | [Prewarm optimization](docs/PREWARM_OPTIMIZATION.md) |
+| Test data | [Validation](docs/VALIDATION.md) |
+| Measured performance | [Performance](docs/PERFORMANCE.md) |
+| Open limitations | [Known limitations](docs/KNOWN_LIMITATIONS.md) |
+| Development record | [Engineering history](docs/ENGINEERING_HISTORY.md) |
 
-| Subject | Page |
-| --- | --- |
-| End-to-end runtime | [Architecture](docs/ARCHITECTURE.md) |
-| Video preparation | [Upscaling pipeline](docs/UPSCALING_PIPELINE.md) |
-| Playback pipeline | [MP4 playback](docs/MP4_PLAYBACK.md) |
-| Runtime tiers | [Video modes](docs/VIDEO_MODES.md) |
-| Rendering boundary | [Renderer integration](docs/RENDERER_INTEGRATION.md) |
-| Frame matching | [Frame synchronization](docs/FRAME_SYNCHRONIZATION.md) |
-| Startup handling | [Prewarm optimization](docs/PREWARM_OPTIMIZATION.md) |
-| Validation | [Validation](docs/VALIDATION.md) |
-| Documented limits | [Known limitations](docs/KNOWN_LIMITATIONS.md) |
-| Performance notes | [Performance](docs/PERFORMANCE.md) |
-| History | [Engineering history](docs/ENGINEERING_HISTORY.md) |
+## Distribution boundary
 
-Specialized pages not expanded in this initial detailing pass remain editorial outlines rather than invented technical claims.
+No MP4 files, extracted source frames, copyrighted cinematics, FMVFix implementation source, or compiled ASIs are contained in this repository. The documented environment is the **English PC v1.4 x86** game; other configurations require separate validation. Installable plugin releases are intended for **Nexus Mods**.
 
-## Distribution
-
-The MP4 integration belongs to **FMVFix**. Its C++ implementation, the unreleased INI, compiled plugins, captured video assets, and upscaled MP4 files remain private. User-ready plugins are intended for **Nexus Mods**, not GitHub.
-
-[Main repository hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix)
+[← Project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix)

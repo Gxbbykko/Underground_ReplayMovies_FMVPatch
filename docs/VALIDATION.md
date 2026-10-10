@@ -1,51 +1,50 @@
-# FMVPatch validation
+# Validation
 
-## Stage 2.5.3 reported results
+[← FMVPatch overview](../README.md) · [Performance](PERFORMANCE.md) · [Known limitations](KNOWN_LIMITATIONS.md)
 
-The final consolidated runtime-report review covers **20 films at 1080p** and **15 reported films at 4K**. Both groups track the original native MAD movie frame serials and the exact MP4 serials substituted at the presentation boundary.
+## Consolidated Stage 2.5.3 results
+
+The last consolidated runtime report includes **20 1080p films** and **15 4K films**. It compares the **native MAD movie serials** observed by the game with the exact **MP4 picture serials** that reached the chosen presentation boundary.
 
 | Measurement | 1080p | 4K |
-| --- | ---: | ---: |
-| Movies in reviewed reports | 20 | 15 |
-| Native MAD frame serials | 9,931 | 5,610 |
-| Exact MP4 frame hits | 9,922 | 5,583 |
-| Initial serials not substituted | 9 | 27 |
-| Decoder failures | 0 | 0 |
-| Texture upload/binding failures | 0 | 0 |
+| :--- | ---: | ---: |
+| Movie runs represented | **20** | **15** |
+| Native MAD serials | **9,931** | **5,610** |
+| Exact replacement serials | **9,922** | **5,583** |
+| Distinct initial serials without replacement | **9** | **27** |
+| Full movie runs with zero fallback | **11** | **6** |
+| Decoder failures | **0** | **0** |
+| Texture upload/binding failures | **0** | **0** |
 
-**Interpretation:** In the reported runs, 9,922 out of 9,931 1080p native serials and 5,583 out of 5,610 4K native serials received their exact MP4 picture substitute. The remaining initial serials used native fallback. The 4K column is not a complete 20-movie 4K validation claim.
+The 20-title catalog combines three intro films and 17 career films. **The available 4K report covers 15 titles only**, not a complete 20/20 4K run.
 
-The report review also identifies **11/20** 1080p movies and **6/15** 4K movies with full-session zero-fallback results. The other nine movies had startup misses only and then caught up.
+## Nine out-of-order selections
 
-## Why nine movies had startup fallback
+The fixed catalog predictor warmed the *expected* next movie, but the operator chose a different ReplayMovies entry. Cached frames for another movie were rightly rejected. The actual movie's MP4 decoder then caught up asynchronously, while the native `.mad` supplied the initial picture.
 
-The fixed-order predictor prewarmed the next expected catalog item, while the test operator sometimes selected another movie in ReplayMovies. For example, the prewarm path anticipated `07_GOD → 08_EDD`, but the actual next selection was `11_PNK`. The prepared frames belonged to the wrong movie, and the runtime appropriately rejected them and started the correct asynchronous decoder.
+| Affected set | Native fallback at start | Subsequent behavior |
+| :--- | :--- | :--- |
+| Nine 1080p runs | Frame serial **0** | Correct MP4 frames subsequently substituted. |
+| Nine 4K runs | Frame serials **0–2** | Correct MP4 frames subsequently substituted. |
 
-The nine affected movie IDs in the report are:
+Affected IDs: `11_PNK`, `13_KIT`, `12_BUD`, `09_GBE`, `14_MUT`, `16_RES`, `15_DIK`, `08_EDD`, `17_MET`.
 
-`11_PNK`, `13_KIT`, `12_BUD`, `09_GBE`, `14_MUT`, `16_RES`, `15_DIK`, `08_EDD`, `17_MET`.
+> [!IMPORTANT]
+> Unique missing **serials** are not identical to failed **draw attempts**. One native serial may be drawn more than once, so a draw-level fallback counter may be larger. The table above deliberately reports distinct missing serials.
 
-For those nine runs:
+## Visual geometry evidence
 
-- **1080p:** serial `0` used the native picture; subsequent MP4 frames matched.
-- **4K:** serials `0`, `1`, and `2` used native picture; subsequent MP4 frames matched.
-- **Decoder and texture error counts:** remained zero in the reported groups.
+Earlier 1080p work exposed an HEVC-coded-frame versus visible-display-aperture mismatch. The later validated aperture handling accepts a **2176 × 1088 coded / 2160 × 1080 visible** example. The nine startup misses were **not** a recurrence of this geometry issue: their MP4 format-validation checks passed.
 
-A separate draw-attempt fallback counter can exceed the count of unmatched **unique frame serials**, because one serial may be requested by more than one draw attempt. These measurements must not be conflated.
+## Subsequent production-source status
 
-## Important geometry verification
+A later quiet-production source configuration disabled routine reports and introduced deduplicated diagnostics for genuine MP4/decoder/texture/hook errors. The notebook's source audit did **not** include a new MSVC compile in that environment; a **separate later archive** contained an actual Win32 build log and binary. Neither should be presented as a fresh full-catalog production gameplay retest.
 
-Earlier 1080p-stage work encountered HEVC coded-frame padding. The later report confirms a visible-display-aperture correction and acceptance of validated crop dimensions (including a 2176×1088 coded / 2160×1080 visible example). Do not classify the nine startup misses as a recurrence of that older geometry problem; in the affected runs the MP4 format validation passed.
+## Claims explicitly excluded
 
-## What has not been demonstrated here
+- Zero-fallback startup for **arbitrary** ReplayMovies selections.
+- 20/20 movie coverage at **4K** based on these 15 reports.
+- Universal GPU/HEVC hardware support or FPS guarantees.
+- A standalone FMVPatch `.asi` or in-game AI model.
 
-- A **20-of-20** 4K movie-report set is not present in this result.
-- **Zero initial fallback** for arbitrary ReplayMovies selection order was **not** shown.
-- The later quiet-production source edit was checked structurally, but was **not** newly compiled and run in the notebook's audit environment.
-- These logs do not establish universal performance characteristics for every GPU, Windows configuration, game executable, or HEVC installation.
-
-## Evidence scope
-
-This page transcribes measured results and recorded interpretation from the final `Reports(6)` / Stage 2.5.3 notebook review. It adds **no new runtime tests** and distributes **no source-derived frames or movie files**.
-
-Related: [Known limitations](KNOWN_LIMITATIONS.md) · [Prewarm optimization](PREWARM_OPTIMIZATION.md)
+The documentation is an analysis of retained engineering evidence; **no new movie runs were executed** to prepare this page.
