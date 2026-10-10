@@ -2,6 +2,18 @@
 
 [← FMVFix overview](../README.md) · [MAD format](MAD_FORMAT.md) · [Parser and decoder](PARSER_AND_DECODER.md)
 
+## Xbox-mode screenshot gallery
+
+| `NA_BOOT` · opening logo | `NA_BOOT` · THX segment |
+| :---: | :---: |
+| ![NA_BOOT Xbox-mode EA Games intro screenshot](../assets/screenshots/xbox/NA_BOOT1.webp) | ![NA_BOOT Xbox-mode THX intro screenshot](../assets/screenshots/xbox/NA_BOOT2.webp) |
+
+| `E3_TITLE` | `01_DAY` | `PSA` |
+| :---: | :---: | :---: |
+| ![E3_TITLE Xbox-mode movie still](../assets/screenshots/xbox/E3_TITLE.webp) | ![01_DAY Xbox-mode movie still](../assets/screenshots/xbox/01_DAY.webp) | ![PSA Xbox-mode movie still](../assets/screenshots/xbox/PSA.webp) |
+
+These captures show selected playback scenes. They do **not** compare a raw Xbox source against an unmodified PC baseline side by side; the controlled platform-difference investigation summarized below comes from the engineering record.
+
 ## Controlled comparison
 
 The Xbox compatibility investigation compared the **same logical movie**, requested at the same native lifecycle boundary, while varying the platform-origin `.mad` asset. The aim was to observe *where* PC playback of an Xbox-origin file diverged from normal playback—not to assume that size, bitrate or extension alone determined acceptance.

@@ -2,6 +2,12 @@
 
 [← FMVFix overview](../README.md) · [Compatibility fixes](COMPATIBILITY_FIXES.md) · [Engineering history](ENGINEERING_HISTORY.md)
 
+## Screenshot evidence and limits
+
+![Xbox-mode E3_TITLE playback capture](../assets/screenshots/xbox/E3_TITLE.webp)
+
+A screenshot can demonstrate visible in-game presentation at the instant captured. It cannot on its own establish correct audio, all-frame decode, resource ownership, or teardown. Those validation claims remain grounded in the reported debugger and runtime tests described below. Additional [Xbox-mode captures](XBOX_VS_PC.md#xbox-mode-screenshot-gallery) are available.
+
 ## Distinct evidence types
 
 The evidence for Xbox compatibility and high-resolution picture substitution must **not** be conflated.

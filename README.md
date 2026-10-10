@@ -7,6 +7,16 @@ FMVFix adapts Xbox-origin `.mad` cinematics to the original **Need for Speed: Un
 > [!IMPORTANT]
 > The optional high-resolution playback code documented in **[FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)** is integrated into **FMVFix**. FMVPatch is a distinct documentation branch, **not a third separately built ASI**.
 
+## Xbox-mode playback captures
+
+The images below are user-provided captures labeled `XBOX` in the original archive. They illustrate native movie picture presentation in the documented Xbox compatibility mode. They are not raw `.mad` files or evidence of universal Xbox-asset compatibility.
+
+| `E3_TITLE` · cinematic | `01_DAY` · career film | `PSA` · intro |
+| :---: | :---: | :---: |
+| ![E3_TITLE Xbox-mode scene](assets/screenshots/xbox/E3_TITLE.webp) | ![01_DAY Xbox-mode scene](assets/screenshots/xbox/01_DAY.webp) | ![PSA Xbox-mode scene](assets/screenshots/xbox/PSA.webp) |
+
+[View both `NA_BOOT` intro captures](docs/XBOX_VS_PC.md#xbox-mode-screenshot-gallery) · [Read the controlled comparison method](docs/XBOX_VS_PC.md).
+
 ## What FMVFix owns
 
 | Layer | Responsibility |
