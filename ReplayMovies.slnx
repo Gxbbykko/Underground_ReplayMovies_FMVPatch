@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="ReplayMovies.vcxproj" Id="6317f6eb-527b-4501-842b-b39423a53aa6" />
+</Solution>

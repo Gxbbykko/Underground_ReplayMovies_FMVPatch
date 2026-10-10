@@ -5,7 +5,7 @@
 ReplayMovies integrates **REPLAY MOVIES** as a seventh selectable option in the existing Need for Speed: Underground (2003) PC Main Menu. It brings a profile-aware catalog of **17 career cinematics** into the game's own frontend and movie playback lifecycle—without an external launcher or video player.
 
 > [!NOTE]
-> This branch documents a completed implementation. Its historic bug investigations should not be mistaken for open feature work. Private C++ sources and compiled `.asi` releases are not hosted here.
+> This branch documents a completed implementation. Its historic bug investigations should not be mistaken for open feature work. Original C++ sources and Visual Studio project files are published in this branch; installable `.asi` releases are distributed separately on Nexus Mods.
 
 ## In-game interface
 
@@ -63,10 +63,10 @@ Read [Validation](docs/VALIDATION.md) for test scope and [Engineering history](d
 | [Lifecycle and hooks](docs/LIFECYCLE_AND_HOOKS.md) | Generation observers, native FMV activation and return. |
 | [Validation](docs/VALIDATION.md) | Regression evidence, pass conditions and limits. |
 | [Engineering history](docs/ENGINEERING_HISTORY.md) | Key discoveries and superseded hypotheses. |
-| [Build notes](docs/BUILDING.md) | Historical build evidence and unpublished-source policy. |
+| [Build notes](docs/BUILDING.md) | Published source, build provenance and reproducibility notes. |
 
 ## Compatibility and availability
 
-The reverse-engineered baseline is **English PC v1.4 x86**. ReplayMovies source, build projects, INI samples and binaries are currently private. **Nexus Mods** is the intended channel for compiled releases; no download link is claimed until a public page exists.
+The reverse-engineered baseline is **English PC v1.4 x86**. ReplayMovies source and Visual Studio build projects are available on this branch. Runtime INIs and compiled binaries are distributed separately through Nexus Mods. **Nexus Mods** is the intended channel for compiled releases; no download link is claimed until a public page exists.
 
 [← Project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) · [FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
