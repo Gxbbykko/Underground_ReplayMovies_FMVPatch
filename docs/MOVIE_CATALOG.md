@@ -2,6 +2,12 @@
 
 [← ReplayMovies overview](../README.md) · [Profile progression](PROFILE_PROGRESSION.md) · [Frontend integration](FRONTEND_INTEGRATION.md)
 
+## Catalog in the game
+
+![ReplayMovies submenu showing a list of available career films](../assets/screenshots/sub-menu.webp)
+
+This screenshot documents the submenu presentation of the career-film list. It does not independently verify which entries would be unlocked for a new User profile; access remains governed by the progression rules described below.
+
 ## Catalog boundary
 
 ReplayMovies presents **17 career cinematics**. The automatic introduction movies (`NA_BOOT`, `PSA`, `E3_TITLE`) belong to the wider native FMV system but **are not** ReplayMovies career entries. The separate FMVFix/FMVPatch playback catalog therefore counts **20 total films** (three intro + seventeen career) without contradicting ReplayMovies' seventeen-entry catalog.

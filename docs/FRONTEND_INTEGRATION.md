@@ -2,6 +2,14 @@
 
 [← ReplayMovies overview](../README.md) · [Architecture](ARCHITECTURE.md) · [Lifecycle](LIFECYCLE_AND_HOOKS.md)
 
+## Screenshots of the completed frontend
+
+| Native menu integration | Career-film selection |
+| :---: | :---: |
+| ![REPLAY MOVIES added to the native Main Menu](../assets/screenshots/main-menu.webp) | ![The ReplayMovies submenu displaying movie choices](../assets/screenshots/sub-menu.webp) |
+
+The left capture shows the existing Main Menu with **REPLAY MOVIES** as a native selectable option. The right capture shows its dedicated film-selection page. These are UI examples; empty-profile and one-row behavior are separately established by the [validation record](VALIDATION.md).
+
 ## A native Main Menu entry
 
 The sixth-to-seventh candidate expansion is the foundation of ReplayMovies. The stock entries remain intact, and **REPLAY MOVIES** occupies a real native selectable position in `MU_Main`, with the ordinary highlight, directional navigation and selection machinery. It is **not** a floating text element that merely imitates a menu row.

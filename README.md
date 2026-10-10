@@ -7,6 +7,16 @@ ReplayMovies integrates **REPLAY MOVIES** as a seventh selectable option in the 
 > [!NOTE]
 > This branch documents a completed implementation. Its historic bug investigations should not be mistaken for open feature work. Private C++ sources and compiled `.asi` releases are not hosted here.
 
+## In-game interface
+
+These captures show the finished native-style entry point and the career-film browser. The submenu image illustrates the visible catalog, not every User-mode progression state.
+
+| Main Menu · seventh option | ReplayMovies · career-film submenu |
+| :---: | :---: |
+| ![ReplayMovies native Main Menu option](assets/screenshots/main-menu.webp) | ![ReplayMovies cinematic browser submenu](assets/screenshots/sub-menu.webp) |
+
+See [Frontend integration](docs/FRONTEND_INTEGRATION.md) for native ownership, selection and return behavior. The visual captures complement—but do not replace—the runtime validation record.
+
 ## Features
 
 | Area | Completed behavior |
