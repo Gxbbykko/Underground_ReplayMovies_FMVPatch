@@ -1,0 +1,9 @@
+# Let readers use purpose-built forms. Keep private disclosures out of issues.
+blank_issues_enabled: false
+contact_links:
+  - name: Support and release policy
+    url: https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/main/SUPPORT.md
+    about: Check what belongs on GitHub and what will belong on Nexus Mods.
+  - name: Security reporting guidance
+    url: https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/blob/main/SECURITY.md
+    about: Do not disclose credentials, private source, or sensitive issues publicly.

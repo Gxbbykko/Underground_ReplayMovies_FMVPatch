@@ -1,0 +1,56 @@
+name: Documentation correction
+description: Suggest an evidence-backed correction to public engineering documentation.
+title: "[Docs] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve these public technical notes.
+        Do not post privately withheld source code, game assets, complete movie frames,
+        passwords, or other confidential materials in a public issue.
+  - type: dropdown
+    id: branch
+    attributes:
+      label: Affected branch
+      options:
+        - main
+        - ReplayMovies
+        - FMVFix
+        - FMVPatch
+    validations:
+      required: true
+  - type: input
+    id: document
+    attributes:
+      label: Affected page or URL
+      placeholder: docs/VALIDATION.md or GitHub URL
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current statement or observed problem
+      description: Briefly describe the incorrect, unclear, or missing documentation.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction
+      description: Distinguish a runtime-confirmed result from an inference or older superseded checkpoint.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Publicly shareable evidence
+      description: Relevant reproducible steps, public references, or concise non-sensitive logs. Do not include private code or licensed movie files.
+    validations:
+      required: false
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Publication checklist
+      options:
+        - label: My report contains no confidential source, personal data, credentials, or copyrighted movie assets.
+          required: true

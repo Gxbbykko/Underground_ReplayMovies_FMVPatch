@@ -1,0 +1,84 @@
+name: Runtime compatibility report
+description: Submit reproducible compatibility evidence, not unverified distribution requests.
+title: "[Runtime] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is a documentation-first engineering archive.
+        Installable releases and their end-user support will be managed through Nexus Mods
+        once the relevant pages exist. Never upload full game executables, private plugin
+        source, proprietary MAD/MP4 movies, or secrets. Small, informative screenshots
+        may be included when you have the right to share them.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      options:
+        - ReplayMovies menu or catalog
+        - FMVFix native Xbox MAD playback
+        - FMVFix integrated 1080p substitution
+        - FMVFix integrated 4K substitution
+        - Unsure
+    validations:
+      required: true
+  - type: dropdown
+    id: build
+    attributes:
+      label: Game executable
+      options:
+        - English PC v1.4 x86 (documented baseline)
+        - Different or unverified executable
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Graphics wrapper and relevant mods
+      description: Include version details if known; leave out personal file-system paths.
+      placeholder: Widescreen Fix version, graphics wrapper, additional ASIs
+    validations:
+      required: false
+  - type: input
+    id: movie
+    attributes:
+      label: Movie ID or menu screen (if relevant)
+      placeholder: E3_TITLE, 01_DAY, MU_Main, ReplayMovies submenu
+    validations:
+      required: false
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start the game...
+        2. Open the menu...
+        3. Select the movie...
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Safe evidence
+      description: Include short sanitized logs or own screenshots only; don't attach proprietary movie files.
+    validations:
+      required: false
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Publication checklist
+      options:
+        - label: I have not attached private source code, game executables, complete movie assets, or secrets.
+          required: true

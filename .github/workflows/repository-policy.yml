@@ -1,0 +1,85 @@
+name: Public repository content policy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/repository-policy.yml"
+      - "**"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: policy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-public-content:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch the dedicated engineering branches
+        shell: bash
+        run: |
+          git fetch --no-tags origin \
+            '+refs/heads/ReplayMovies:refs/remotes/origin/ReplayMovies' \
+            '+refs/heads/FMVFix:refs/remotes/origin/FMVFix' \
+            '+refs/heads/FMVPatch:refs/remotes/origin/FMVPatch'
+      - name: Check tracked paths and screenshot sizes
+        shell: bash
+        run: |
+          python3 - <<'PYTHON'
+          import re
+          import subprocess
+          import sys
+
+          branches = {
+              'main': 'HEAD',
+              'ReplayMovies': 'refs/remotes/origin/ReplayMovies',
+              'FMVFix': 'refs/remotes/origin/FMVFix',
+              'FMVPatch': 'refs/remotes/origin/FMVPatch',
+          }
+          top_level = {
+              'README.md', 'CHANGELOG.md', 'CONTRIBUTING.md',
+              'SUPPORT.md', 'SECURITY.md', 'LICENSE',
+              '.gitignore', '.gitattributes', '.github/pull_request_template.md',
+          }
+          screenshot = re.compile(r'^(docs/images|images|assets/images|assets/screenshots)/[a-zA-Z0-9_./-]+\.(png|jpg|jpeg|webp)$', re.I)
+          documents = re.compile(r'^docs/[a-zA-Z0-9_./-]+\.md$')
+          forms_and_workflows = re.compile(r'^\.github/(ISSUE_TEMPLATE|workflows)/[a-zA-Z0-9_-]+\.ya?ml$')
+          restricted = re.compile(r'(^|/)(source|src|private|configuration|Release|Debug|\.vs)/|\.(cpp|c|h|hpp|vcxproj|sln|slnx|asi|dll|exe|pdb|ini|mad|mp4|mkv|zip|7z|rar)$', re.I)
+          max_screenshot_bytes = 8 * 1024 * 1024
+          failures = []
+
+          def git(*args):
+              return subprocess.check_output(['git', *args]).decode().strip()
+
+          for branch, ref in branches.items():
+              paths = git('ls-tree', '-r', '--name-only', ref).splitlines()
+              for path in paths:
+                  if restricted.search(path):
+                      failures.append(f'{branch}: restricted tracked path: {path}')
+                  elif path in top_level or documents.fullmatch(path):
+                      continue
+                  elif forms_and_workflows.fullmatch(path) and branch == 'main':
+                      continue
+                  elif screenshot.fullmatch(path):
+                      size = int(git('cat-file', '-s', f'{ref}:{path}'))
+                      if size > max_screenshot_bytes:
+                          failures.append(f'{branch}: screenshot exceeds 8 MiB: {path}')
+                  else:
+                      failures.append(f'{branch}: unexpected public file: {path}')
+              print(f'{branch}: policy checked {len(paths)} tracked files')
+          if failures:
+              print('\n'.join(failures))
+              sys.exit(1)
+          print('Tracked-file policy: PASS')
+          PYTHON

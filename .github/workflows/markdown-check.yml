@@ -1,0 +1,82 @@
+name: Documentation links and structure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.md"
+      - ".github/workflows/markdown-check.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.md"
+      - ".github/workflows/markdown-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch the dedicated engineering branches
+        shell: bash
+        run: |
+          git fetch --no-tags origin \
+            '+refs/heads/ReplayMovies:refs/remotes/origin/ReplayMovies' \
+            '+refs/heads/FMVFix:refs/remotes/origin/FMVFix' \
+            '+refs/heads/FMVPatch:refs/remotes/origin/FMVPatch'
+      - name: Validate Markdown links and conventions
+        shell: bash
+        run: |
+          python3 - <<'PYTHON'
+          import posixpath
+          import re
+          import subprocess
+          import sys
+          from urllib.parse import unquote
+
+          branches = {
+              'main': 'HEAD',
+              'ReplayMovies': 'refs/remotes/origin/ReplayMovies',
+              'FMVFix': 'refs/remotes/origin/FMVFix',
+              'FMVPatch': 'refs/remotes/origin/FMVPatch',
+          }
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+
+          failures = []
+          for branch, ref in branches.items():
+              names = set(git('ls-tree', '-r', '--name-only', ref).decode().splitlines())
+              for path in sorted(p for p in names if p.lower().endswith('.md')):
+                  source = git('show', f'{ref}:{path}').decode('utf-8-sig')
+                  if re.search(r'\bChapter\s+(I|II|III)\b', source):
+                      failures.append(f'{branch}/{path}: redundant chapter numbering')
+                  if len(re.findall(r'^\s*```', source, flags=re.MULTILINE)) % 2:
+                      failures.append(f'{branch}/{path}: unbalanced code fences')
+                  for match in re.finditer(r'!?\[[^\]]*\]\(([^)]+)\)', source):
+                      target = match.group(1).strip().split(' "', 1)[0].strip('<>')
+                      if (not target or target.startswith(('#', 'https://', 'http://', 'mailto:'))):
+                          continue
+                      target = unquote(target.split('#', 1)[0].split('?', 1)[0])
+                      if not target:
+                          continue
+                      candidate = posixpath.normpath(posixpath.join(posixpath.dirname(path), target))
+                      if candidate == '..' or candidate.startswith('../') or candidate not in names:
+                          failures.append(f'{branch}/{path}: missing local target {target}')
+              print(f'{branch}: checked {sum(p.endswith(".md") for p in names)} Markdown files')
+          if failures:
+              print('\n'.join(failures))
+              sys.exit(1)
+          print('Markdown links, code fences and branch naming: PASS')
+          PYTHON
