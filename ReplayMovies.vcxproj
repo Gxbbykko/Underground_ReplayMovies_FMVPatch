@@ -168,11 +168,6 @@
     <ClInclude Include="ReplayMoviesProgressionHook.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReplayMovies.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="CandidateSafetyHook.cpp" />
     <ClCompile Include="CapacityHook.cpp" />
     <ClCompile Include="dllmain.cpp" />

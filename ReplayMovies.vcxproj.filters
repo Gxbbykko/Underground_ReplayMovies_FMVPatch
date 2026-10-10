@@ -53,11 +53,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReplayMovies.ini">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
