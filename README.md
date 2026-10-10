@@ -1,4 +1,4 @@
-# Chapter III — FMVPatch
+# FMVPatch
 
 **Status:** Completed upscale/playback integration milestone; documentation chapter.
 
@@ -24,4 +24,4 @@ FMVPatch documents integration of **previously AI-upscaled** cinematic videos wi
 
 The integrated FMVFix/FMVPatch implementation source is **not public yet**. No compiled plugins or movie assets are hosted on GitHub. Public installable releases are reserved for Nexus Mods when published.
 
-[← Main project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [Chapter II — FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix)
+[← Main project hub](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/main) · [FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix)
