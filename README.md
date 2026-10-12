@@ -7,7 +7,26 @@
 [Explore ReplayMovies](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/ReplayMovies) · [Explore FMVFix](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVFix) · [Explore FMVPatch](https://github.com/Gxbbykko/Underground_ReplayMovies_FMVPatch/tree/FMVPatch)
 
 > [!IMPORTANT]
-> This repository is a **documentation-first engineering archive**, not a download mirror. Installable plugin releases are intended for **Nexus Mods**; no release pages are linked until they exist. Original source and Visual Studio project files for the two plugins are on the `ReplayMovies` and `FMVFix` branches; binaries and movie assets are not hosted here; selected in-game screenshots are used only to document the interface and playback modes.
+> This repository is a **documentation-first engineering archive**, not a download mirror. The official [Nexus Mods release page](https://www.nexusmods.com/needforspeedunderground/mods/33) is the central entry point for the ReplayMovies and FMVFix plugins and information about the optional movie packages. Original source and Visual Studio project files for the two plugins are on the `ReplayMovies` and `FMVFix` branches; compiled binaries and movie assets are not hosted here. Selected in-game screenshots document the interface and playback modes.
+
+## Downloads — plugins and movie packages
+
+**[Download ReplayMovies × FMVFix — Nexus Mods](https://www.nexusmods.com/needforspeedunderground/mods/33)**
+
+Use the official Nexus Mods page for **plugin downloads, installation instructions, and links or information for optional movie packages**. The release centers on two compiled `.asi` plugins:
+
+- **ReplayMovies** — the native in-game career-cinematic replay interface.
+- **FMVFix** — Xbox-origin `.mad` compatibility with optional high-resolution FMV picture presentation. **FMVPatch functionality is integrated into FMVFix**; it is not a third `.asi` plugin.
+
+### Movie presentation options
+
+| Movie tier | Description |
+| :--- | :--- |
+| **Xbox Port** | Original Xbox-origin cinematics, displayed through the compatible native `.mad` movie pipeline. |
+| **1080p — Offline AI Upscaled** | Prepared Full HD HEVC MP4 alternatives for compatible movie playback. |
+| **4K — Offline AI Upscaled** | Prepared Ultra HD HEVC MP4 alternatives for compatible movie playback. |
+
+**Where to find movie downloads:** Follow the instructions and movie-download links listed on the **[Nexus Mods page](https://www.nexusmods.com/needforspeedunderground/mods/33)**. This README intentionally does not include a direct external file-host link. Movie assets are **not distributed through GitHub**, and you should only obtain and use assets you are authorized to access.
 
 ## In-game screenshots
 
@@ -75,9 +94,9 @@ flowchart TD
 | :--- | :--- |
 | Target executable | **Need for Speed: Underground (2003), English PC v1.4, 32-bit (`x86`)**. |
 | Other game versions or localization | **Not automatically supported** without independent validation. |
-| Source and project files | Published on the `ReplayMovies` and `FMVFix` branches; compiled downloads remain on Nexus Mods. |
-| Installable `.asi` modules | Intended for **Nexus Mods** rather than GitHub. |
-| Original `.mad` files, game executables and upscaled MP4s | **Never included** in this documentation repository. |
+| Source and project files | Published on the `ReplayMovies` and `FMVFix` branches; compiled plugin downloads are linked on [Nexus Mods](https://www.nexusmods.com/needforspeedunderground/mods/33). |
+| Installable `.asi` modules | Download **ReplayMovies** and **FMVFix** through the [official Nexus Mods page](https://www.nexusmods.com/needforspeedunderground/mods/33), not GitHub. |
+| Original `.mad` files, game executables and upscaled MP4s | **Never included** in this documentation repository. Movie-package information and any external download links are handled through [Nexus Mods](https://www.nexusmods.com/needforspeedunderground/mods/33). |
 | Configuration examples | Under review; actual local INIs should not be uploaded as part of a documentation push. |
 
 ## Reading and contributing
